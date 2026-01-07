@@ -354,6 +354,15 @@ To use Qwen3-VL:
 ```
 ### Examples
 
+#### Example for BAGEL generation
+
+To run the image generation example specifically for the BAGEL-7B-MoT structure, use the following command:
+```bash
+python example_bagel.py \
+--model_path sensenova/SenseNova-SI-1.1-BAGEL-7B-MoT \
+--mode generate
+```
+
 #### Example 1
 
 This example is from [SITE-Bench](https://github.com/wenqi-wang20/SITE-Bench):
