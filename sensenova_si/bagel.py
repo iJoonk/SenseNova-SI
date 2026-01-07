@@ -91,7 +91,7 @@ class SenseNovaSIBagelModel(Model):
         model_path="sensenova/SenseNova-SI-1.1-BAGEL-7B-MoT",
         generation_config: dict[str, Any] | str | os.PathLike | None = None,
         mode="understanding",
-        out_img_dir="./output_image/test_bagel/",
+        out_img_dir="./output_images/test_bagel/",
         dtype: str = "bf16",
     ):
         super().__init__(generation_config)
