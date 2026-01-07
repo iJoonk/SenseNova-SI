@@ -349,6 +349,14 @@ python example.py \
 
 ### 示例
 
+#### BAGEL 图像生成示例
+若要运行针对 BAGEL-7B-MoT 架构的图像生成示例，请使用以下命令：
+```bash
+python example_bagel.py \
+  --model_path sensenova/SenseNova-SI-1.1-BAGEL-7B-MoT \
+  --mode generate
+```
+
 #### 示例1
 
 该例题源自[SITE-Bench](https://github.com/wenqi-wang20/SITE-Bench):
