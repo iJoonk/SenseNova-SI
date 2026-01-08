@@ -350,12 +350,32 @@ python example.py \
 ### 示例
 
 #### BAGEL 图像生成示例
+
 若要运行针对 BAGEL-7B-MoT 架构的图像生成示例，请使用以下命令：
+
 ```bash
 python example_bagel.py \
   --model_path sensenova/SenseNova-SI-1.1-BAGEL-7B-MoT \
+  --prompt "A chubby cat made of 3D point clouds, stretching its body, translucent with a soft glow." \
   --mode generate
 ```
+
+如果想要开启thinking模型进行生成，可以使用`--mode think_generate`。相同的Prompt生成的效果对比：
+
+<table>
+  <tr>
+    <th>mode=generate</th>
+    <th>mode=think_generate</th>
+  </tr>
+  <tr>
+    <td align="center" width="50%" style="padding:4px;">
+      <img src="./examples/bagel-generate-example.jpg" alt="First image" width="100%">
+    </td>
+    <td align="center" width="50%" style="padding:4px;">
+      <img src="./examples/bagel-think_generate-example.jpg" alt="Second image" width="100%">
+    </td>
+  </tr>
+</table>
 
 #### 示例1
 
@@ -368,8 +388,6 @@ python example.py \
   --model_path sensenova/SenseNova-SI-1.2-InternVL3-8B
 # --model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
 ```
-
-
 
 <!-- Example 1 -->
 <details open>
