@@ -497,7 +497,7 @@ python example.py \
 
 如需复现上述基准测试结果，请参考 [EASI](https://github.com/EvolvingLMMs-Lab/EASI) 在主流空间智能基准上评估 SenseNova-SI 的表现。
 
-EASI 支持超过 20 种空间智能模型和 10 多种空间基准，并提供 Docker 实现一键式空间智能评估。
+EASI 支持超过 20 种空间智能模型和 20 多种空间基准，并提供 Docker 实现一键式空间智能评估。
 
 
 ## 🖊️ 引用

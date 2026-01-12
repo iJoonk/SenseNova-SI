@@ -506,7 +506,7 @@ python example.py \
 
 To reproduce the benchmark results above, please refer to [EASI](https://github.com/EvolvingLMMs-Lab/EASI) to evaluate SenseNova-SI on mainstream spatial intelligence benchmarks.
 
-EASI supports over 20 spatial intelligence models and more than 10 spatial benchmarks, offering Docker for one-click spatial intelligence evaluation.
+EASI supports over 20 spatial intelligence models and more than 20 spatial benchmarks, offering Docker for one-click spatial intelligence evaluation.
 
 ## 🖊️ Citation
 
