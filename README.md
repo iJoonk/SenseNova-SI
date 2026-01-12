@@ -44,6 +44,7 @@ All newly trained multimodal foundation models are publicly released to facilita
 *In the future, SenseNova-SI will be integrated with larger-scale in-house models.*
 
 ## News
+- [2026-01-09] We have released [**SenseNova-SI-1.3-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.3-InternVL3-8B), which improves open-ended spatial question-answering capabilities.
 - [2025-12-06] As a first step, we have released a highly effective data subset, [**SenseNova-SI-800K**](https://huggingface.co/datasets/sensenova/SenseNova-SI-800K), as well as [**SenseNova-SI-1.1-InternVL3-8B-800K**](https://huggingface.co/sensenova/SenseNova-SI-1.1-InternVL3-8B-800K), a model trained exclusively on the **SenseNova-SI-800K** subset.
 - [2025-12-06] We present models starting from more base models, namely[**SenseNova-SI-1.2-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.2-InternVL3-8B), [**SenseNova-SI-1.1-Qwen2.5-VL-3B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen2.5-VL-3B), [**SenseNova-SI-1.1-Qwen2.5-VL-7B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen2.5-VL-7B), and [**SenseNova-SI-1.1-Qwen3-VL-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen3-VL-8B). **SenseNova-SI-1.2-InternVL3-8B** achieve SOTA across eight recent spatial intelligence benchmarks.
 - [2025-11-15] We have released [**SenseNova-SI-1.1-InternVL3-2B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-InternVL3-2B) and 
@@ -64,13 +65,23 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
   <tbody>
     <tr>
       <td>
+        <a href="https://huggingface.co/sensenova/SenseNova-SI-1.3-InternVL3-8B/">
+          SenseNova-SI-1.3-InternVL3-8B
+        </a>
+      </td>
+      <td>InternVL3</td>
+      <td>14M</td>
+      <td>Best Model</td>
+    </tr>
+    <tr>
+      <td>
         <a href="https://huggingface.co/sensenova/SenseNova-SI-1.2-InternVL3-8B/">
           SenseNova-SI-1.2-InternVL3-8B
         </a>
       </td>
       <td>InternVL3</td>
       <td>10M</td>
-      <td>Best Model</td>
+      <td>-</td>
     </tr>
     <tr>
       <td>
@@ -141,13 +152,14 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
 
 Currently, we build SenseNova-SI upon popular open-source foundation models to maximize compatibility with existing research pipelines.
 In this release, we present 
+[**SenseNova-SI-1.3-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.3-InternVL3-8B),
 [**SenseNova-SI-1.2-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.2-InternVL3-8B),
 [**SenseNova-SI-1.1-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-InternVL3-8B),
 [**SenseNova-SI-1.1-Qwen3-VL-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen3-VL-8B),
 [**SenseNova-SI-1.1-Qwen2.5-VL-7B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen2.5-VL-7B),
 [**SenseNova-SI-1.1-Qwen2.5-VL-3B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen2.5-VL-3B), and
 [**SenseNova-SI-1.1-InternVL3-2B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-InternVL3-2B),
-of which **SenseNova-SI-1.2-InternVL3-8B** achieves state-of-the-art performance among open-source models of comparable size across eight recent spatial intelligence benchmarks:
+of which **SenseNova-SI-1.3-InternVL3-8B** achieves state-of-the-art performance among open-source models of comparable size across eight recent spatial intelligence benchmarks, while simultaneously enhancing open-ended spatial question-answering:
 **VSI**, **MMSI**, **MindCube**, **ViewSpatial**, **SITE**, **BLINK**, **3DSRBench**, **EmbSpatial-Bench**.
 
 
@@ -215,15 +227,15 @@ of which **SenseNova-SI-1.2-InternVL3-8B** achieves state-of-the-art performance
       <td>Cambrian-S-7B</td><td>67.5</td><td>25.8</td><td>39.6</td><td>40.9</td><td>33.0</td><td>37.9</td><td>54.8</td><td>72.8</td>
     </tr>
     <tr>
-      <td><strong>SenseNova-SI-1.2-InternVL3-8B</strong></td>
-      <td><strong>69.6</strong></td>
-      <td><strong>42.6</strong></td>
-      <td><strong>89.0</strong></td>
-      <td><strong>58.8</strong></td>
-      <td><strong>49.0</strong></td>
-      <td><strong>69.4</strong></td>
-      <td><strong>60.1</strong></td>
-      <td><strong>77.7</strong></td>
+      <td><strong>SenseNova-SI-1.3-InternVL3-8B</strong></td>
+      <td><strong>68.6</strong></td>
+      <td><strong>42.5</strong></td>
+      <td><strong>89.9</strong></td>
+      <td><strong>61.3</strong></td>
+      <td><strong>47.5</strong></td>
+      <td><strong>68.0</strong></td>
+      <td><strong>62.4</strong></td>
+      <td><strong>81.0</strong></td>
     </tr>
     <tr style="background:#F2F0EF;color:#6b7280;font-weight:600;text-align:center;">
       <td colspan="9"><em>Proprietary Models</em></td>
@@ -239,7 +251,6 @@ of which **SenseNova-SI-1.2-InternVL3-8B** achieves state-of-the-art performance
     </tr>
   </tbody>
 </table>
-
 
 ### Datasets
 
@@ -335,7 +346,7 @@ A simple image-free test to verify environment setup and download the model.
 ```bash
 python example.py \
   --question "Hello" \
-  --model_path sensenova/SenseNova-SI-1.2-InternVL3-8B
+  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B
 ```
 
 #### Switching Between Supported Models
@@ -390,8 +401,8 @@ This example is from [SITE-Bench](https://github.com/wenqi-wang20/SITE-Bench):
 ```bash
 python example.py \
   --image_paths examples/Q1_1.png \
-  --question "<image>\nConsider the real-world 3D locations of the objects. Which is closer to the sink, the toilet paper or the towel?\nOptions: \nA. toilet paper\nB. towel\nGive me the answer letter directly. The best answer is:" \
-  --model_path sensenova/SenseNova-SI-1.2-InternVL3-8B
+  --question "Consider the real-world 3D locations of the objects. Which is closer to the sink, the toilet paper or the towel?\nOptions: \nA. toilet paper\nB. towel\nGive me the answer letter directly. The best answer is:" \
+  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B
 # --model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
 ```
 
@@ -420,8 +431,8 @@ This example is from [MMSI-Bench](https://github.com/InternRobotics/MMSI-Bench):
 ```bash
 python example.py \
   --image_paths examples/Q2_1.png examples/Q2_2.png \
-  --question "<image><image>\nIf the landscape painting is on the east side of the bedroom, where is the window located in the bedroom?\nOptions: A. North side, B. South side, C. West side, D. East side\nAnswer with the option's letter from the given choices directly. Enclose the option's letter within ``." \
-  --model_path sensenova/SenseNova-SI-1.2-InternVL3-8B 
+  --question "If the landscape painting is on the east side of the bedroom, where is the window located in the bedroom?\nOptions: A. North side, B. South side, C. West side, D. East side\nAnswer with the option's letter from the given choices directly. Enclose the option's letter within ``." \
+  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B 
 # --model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
 ```
 
@@ -443,6 +454,38 @@ python example.py \
 </details>
 
 
+#### Example 3
+
+This example is from [MMSI-Bench](https://github.com/InternRobotics/MMSI-Bench) and test the model's capability in open-ended short-answer questions:
+
+```bash
+python example.py \
+  --image_paths examples/Q3_1.png examples/Q3_2.png examples/Q3_3.png \
+  --question "The robot is making tea. What is the order in which the pictures were taken?" \
+  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B
+```
+
+<!-- Example 3 -->
+<details open>
+  <summary><strong>Details of Example 3</strong></summary>
+  <p><strong>Q:</strong>The robot is making tea. What is the order in which the pictures were taken?</p>
+  <table>
+    <tr>
+      <td align="center" width="33%" style="padding:4px;">
+        <img src="./examples/Q3_1.png" alt="First image" width="100%">
+      </td>
+      <td align="center" width="33%" style="padding:4px;">
+        <img src="./examples/Q3_2.png" alt="Second image" width="100%">
+      </td>
+      <td align="center" width="33%" style="padding:4px;">
+        <img src="./examples/Q3_3.png" alt="Third image" width="100%">
+      </td>
+    </tr>
+  </table>
+  <p><strong>GT: Second, first, third</strong></p>
+</details>
+
+
 #### Test Multiple Questions in a Single Run
 
 Prepare a file similar to [examples/examples.jsonl](examples/examples.jsonl), where each line represents a single question.
@@ -455,7 +498,7 @@ The model is loaded once and processes questions sequentially. The questions rem
 ```bash
 python example.py \
   --jsonl_path examples/examples.jsonl \
-  --model_path sensenova/SenseNova-SI-1.2-InternVL3-8B 
+  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B 
 # --model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
 ```
 

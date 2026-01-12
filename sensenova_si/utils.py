@@ -29,6 +29,22 @@ def to_openai_format(
     return [{"role": "user", "content": content}]
 
 
+def reorganize_prompt(message, image_num):
+    if image_num == 1:
+        prompt = "<image>\n" + "\n".join(
+            [x["value"] for x in message if x["type"] == "text"]
+        )
+    else:
+        prompt = ""
+        for x in message:
+            if x["type"] == "text":
+                prompt += x["value"]
+        prompt = (
+            "".join([f"Image-{i + 1}: <image>\n" for i in range(image_num)]) + prompt
+        )
+    return prompt
+
+
 def build_transform(input_size):
     MEAN, STD = IMAGENET_MEAN, IMAGENET_STD
     transform = T.Compose(
@@ -59,7 +75,7 @@ def find_closest_aspect_ratio(aspect_ratio, target_ratios, width, height, image_
 
 
 def dynamic_preprocess(
-    image, min_num=1, max_num=12, image_size=448, use_thumbnail=False
+    image, min_num=1, max_num=6, image_size=448, use_thumbnail=False
 ):
     orig_width, orig_height = image.size
     aspect_ratio = orig_width / orig_height
@@ -104,7 +120,7 @@ def dynamic_preprocess(
     return processed_images
 
 
-def load_image(image_file, input_size=448, max_num=12):
+def load_image(image_file, input_size=448, max_num=6):
     image = Image.open(image_file).convert("RGB")
     transform = build_transform(input_size=input_size)
     images = dynamic_preprocess(
