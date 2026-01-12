@@ -367,9 +367,11 @@ class SenseNovaSIBagelModel(Model):
 
         img_cnt, txt_cnt = len(ret["image"]), len(ret["text"])
         if img_cnt + txt_cnt != 1:
-            raise ValueError(
-                f"[OutputError] Current expect exactly 1 image or 1 text. Got images={img_cnt}, texts={txt_cnt}"
+            print(
+                f"[Warning] You are using {mode} mode, so the output has {img_cnt} images and {txt_cnt} texts"
             )
+            if txt_cnt > 0:
+                print(f"[Warning] The text output is: {ret['text'][0]}")
 
         ret["image"] = ret["image"][0] if img_cnt else None
         ret["text"] = ret["text"][0] if txt_cnt else None

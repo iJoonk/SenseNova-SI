@@ -362,12 +362,32 @@ python example.py \
 ### 示例
 
 #### BAGEL 图像生成示例
+
 若要运行针对 BAGEL-7B-MoT 架构的图像生成示例，请使用以下命令：
+
 ```bash
 python example_bagel.py \
   --model_path sensenova/SenseNova-SI-1.1-BAGEL-7B-MoT \
+  --prompt "A chubby cat made of 3D point clouds, stretching its body, translucent with a soft glow." \
   --mode generate
 ```
+
+如果想要开启thinking模型进行生成，可以使用`--mode think_generate`。相同的Prompt生成的效果对比：
+
+<table>
+  <tr>
+    <th>mode=generate</th>
+    <th>mode=think_generate</th>
+  </tr>
+  <tr>
+    <td align="center" width="50%" style="padding:4px;">
+      <img src="./examples/bagel-generate-example.jpg" alt="First image" width="100%">
+    </td>
+    <td align="center" width="50%" style="padding:4px;">
+      <img src="./examples/bagel-think_generate-example.jpg" alt="Second image" width="100%">
+    </td>
+  </tr>
+</table>
 
 #### 示例1
 
@@ -380,8 +400,6 @@ python example.py \
   --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B
 # --model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
 ```
-
-
 
 <!-- Example 1 -->
 <details open>
@@ -479,7 +497,7 @@ python example.py \
 
 如需复现上述基准测试结果，请参考 [EASI](https://github.com/EvolvingLMMs-Lab/EASI) 在主流空间智能基准上评估 SenseNova-SI 的表现。
 
-EASI 支持超过 20 种空间智能模型和 10 多种空间基准，并提供 Docker 实现一键式空间智能评估。
+EASI 支持超过 20 种空间智能模型和 20 多种空间基准，并提供 Docker 实现一键式空间智能评估。
 
 
 ## 🖊️ 引用

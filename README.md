@@ -368,11 +368,30 @@ To use Qwen3-VL:
 #### Example for BAGEL generation
 
 To run the image generation example specifically for the BAGEL-7B-MoT structure, use the following command:
+
 ```bash
 python example_bagel.py \
   --model_path sensenova/SenseNova-SI-1.1-BAGEL-7B-MoT \
+  --prompt "A chubby cat made of 3D point clouds, stretching its body, translucent with a soft glow." \
   --mode generate
 ```
+
+Use `--mode think_generate` to activate the thinking before generation. Below is a comparison of two modes for the same prompt：
+
+<table>
+  <tr>
+    <th>mode=generate</th>
+    <th>mode=think_generate</th>
+  </tr>
+  <tr>
+    <td align="center" width="50%" style="padding:4px;">
+      <img src="./examples/bagel-generate-example.jpg" alt="First image" width="100%">
+    </td>
+    <td align="center" width="50%" style="padding:4px;">
+      <img src="./examples/bagel-think_generate-example.jpg" alt="Second image" width="100%">
+    </td>
+  </tr>
+</table>
 
 #### Example 1
 
@@ -487,7 +506,7 @@ python example.py \
 
 To reproduce the benchmark results above, please refer to [EASI](https://github.com/EvolvingLMMs-Lab/EASI) to evaluate SenseNova-SI on mainstream spatial intelligence benchmarks.
 
-EASI supports over 20 spatial intelligence models and more than 10 spatial benchmarks, offering Docker for one-click spatial intelligence evaluation.
+EASI supports over 20 spatial intelligence models and more than 20 spatial benchmarks, offering Docker for one-click spatial intelligence evaluation.
 
 ## 🖊️ Citation
 

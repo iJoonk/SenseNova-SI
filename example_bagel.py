@@ -25,7 +25,7 @@ def main():
     parser.add_argument(
         "--prompt",
         type=str,
-        default="一只可爱的小猫坐在窗台上，阳光透过窗户洒在它身上",
+        default="A chubby cat made of 3D point clouds, stretching its body, translucent with a soft glow.",
         help="Text prompt used to generate an image",
     )
     parser.add_argument(
@@ -45,7 +45,7 @@ def main():
         "--dtype",
         type=str,
         default="bf16",
-        choices=["bf16", "nf4", "int8"],
+        choices=["bf16"],
         help="Model precision type",
     )
     args = parser.parse_args()
