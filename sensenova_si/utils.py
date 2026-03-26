@@ -15,6 +15,10 @@ def to_openai_format(
 ):
     if images is None:
         images = []
+
+    existing_count = question.count(image_token)
+    if images and existing_count == 0:
+        question = "".join([f"{image_token}\n" for _ in images]) + question
     content = []
     text_split = question.split(image_token)
     assert len(text_split) == len(images) + 1, (

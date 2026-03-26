@@ -325,6 +325,11 @@ class SenseNovaSIBagelModel(Model):
 
         images = images or []
 
+        # Auto-prepend <image> placeholders if the question doesn't contain them
+        existing_count = question.count("<image>")
+        if images and existing_count == 0:
+            question = "".join(["<image>\n" for _ in images]) + question
+
         text_parts = question.split("<image>")
         if len(text_parts) != len(images) + 1:
             raise ValueError(f"Text iamge tokens and number of images not match! ")
