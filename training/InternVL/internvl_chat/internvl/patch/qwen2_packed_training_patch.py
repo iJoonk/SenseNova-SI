@@ -14,7 +14,6 @@ from transformers.models.qwen2.modeling_qwen2 import (
 
 # Modified from transformers.models.qwen2.modeling_qwen2.Qwen2FlashAttention2
 class Qwen2FlashAttention2ForPackedTraining(Qwen2FlashAttention2):
-
     def _flash_attention_forward(
         self,
         query_states,
@@ -54,10 +53,12 @@ class Qwen2FlashAttention2ForPackedTraining(Qwen2FlashAttention2):
         cu_seqlens = attention_mask.squeeze(0)
 
         with torch.no_grad():
-            max_seqlen = max([
-                cu_seqlens[idx+1] - cu_seqlens[idx]
-                for idx in range(cu_seqlens.size(0) - 1)
-            ]).item()
+            max_seqlen = max(
+                [
+                    cu_seqlens[idx + 1] - cu_seqlens[idx]
+                    for idx in range(cu_seqlens.size(0) - 1)
+                ]
+            ).item()
 
         if not self._flash_attn_uses_top_left_mask:
             causal = self.is_causal
@@ -104,5 +105,5 @@ class Qwen2FlashAttention2ForPackedTraining(Qwen2FlashAttention2):
 
 
 def replace_qwen2_attention_class():
-    QWEN2_ATTENTION_CLASSES['flash_attention_2'] = Qwen2FlashAttention2ForPackedTraining
-    print('Replace QWEN2_ATTENTION_CLASSES to support packed training!!')
+    QWEN2_ATTENTION_CLASSES["flash_attention_2"] = Qwen2FlashAttention2ForPackedTraining
+    print("Replace QWEN2_ATTENTION_CLASSES to support packed training!!")

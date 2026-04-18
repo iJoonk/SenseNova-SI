@@ -93,13 +93,13 @@ IGNORE_INDEX = -100
 Image.MAX_IMAGE_PIXELS = None
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 MaximumDecompressedSize = 1024
-MegaByte = 2 ** 20
+MegaByte = 2**20
 PngImagePlugin.MAX_TEXT_CHUNK = MaximumDecompressedSize * MegaByte
 
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 logger = logging.getLogger(__name__)
 
-os.environ['TOKENIZERS_PARALLELISM'] = 'true'
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 @dataclass
@@ -107,73 +107,89 @@ class ModelArguments:
     """
     Arguments for specifying model, tokenizer, and configurations.
     """
+
     model_name_or_path: Optional[str] = field(
         default=None,
-        metadata={'help': 'Path to a pretrained model (local or from huggingface.co/models).'}
+        metadata={
+            "help": "Path to a pretrained model (local or from huggingface.co/models)."
+        },
     )
     vision_path: Optional[str] = field(
         default=None,
-        metadata={'help': 'Path to a pretrained model (local or from huggingface.co/models).'}
+        metadata={
+            "help": "Path to a pretrained model (local or from huggingface.co/models)."
+        },
     )
     llm_path: Optional[str] = field(
         default=None,
-        metadata={'help': 'Path to a pretrained model (local or from huggingface.co/models).'}
+        metadata={
+            "help": "Path to a pretrained model (local or from huggingface.co/models)."
+        },
     )
     mlp_path: Optional[str] = field(
         default=None,
-        metadata={'help': 'Path to a pretrained model (local or from huggingface.co/models).'}
+        metadata={
+            "help": "Path to a pretrained model (local or from huggingface.co/models)."
+        },
     )
     freeze_llm: bool = field(
         default=False,
-        metadata={'help': 'Set to True to freeze the LLM. Default is False.'},
+        metadata={"help": "Set to True to freeze the LLM. Default is False."},
     )
     freeze_backbone: bool = field(
         default=False,
-        metadata={'help': 'Set to True to freeze the ViT. Default is False.'},
+        metadata={"help": "Set to True to freeze the ViT. Default is False."},
     )
     freeze_mlp: bool = field(
         default=False,
-        metadata={'help': 'Set to True to freeze the MLP. Default is False.'},
+        metadata={"help": "Set to True to freeze the MLP. Default is False."},
     )
     unfreeze_vit_layers: int = field(
         default=0,
-        metadata={'help': 'Specify the number of ViT layers to unfreeze. Default is 0.'},
+        metadata={
+            "help": "Specify the number of ViT layers to unfreeze. Default is 0."
+        },
     )
     vision_select_layer: int = field(
         default=-1,
-        metadata={'help': 'Specify the layer of ViT feature map to use. Default is -1 for the last layer.'},
+        metadata={
+            "help": "Specify the layer of ViT feature map to use. Default is -1 for the last layer."
+        },
     )
     use_backbone_lora: int = field(
         default=0,
-        metadata={'help': 'Set the LoRA adapter rank for the ViT. Default is 0.'}
+        metadata={"help": "Set the LoRA adapter rank for the ViT. Default is 0."},
     )
     use_llm_lora: int = field(
         default=0,
-        metadata={'help': 'Set the LoRA adapter rank for the LLM. Default is 0.'}
+        metadata={"help": "Set the LoRA adapter rank for the LLM. Default is 0."},
     )
     unfreeze_lm_head: bool = field(
         default=False,
-        metadata={'help': 'Set to True to unfreeze the head of LLM. Default is False.'},
+        metadata={"help": "Set to True to unfreeze the head of LLM. Default is False."},
     )
     grad_checkpoint: bool = field(
         default=True,
-        metadata={'help': 'Set to True to use gradient checkpointing. Default is True.'},
+        metadata={
+            "help": "Set to True to use gradient checkpointing. Default is True."
+        },
     )
     drop_path_rate: float = field(
         default=0.0,
-        metadata={'help': 'Set the drop path rate for the ViT. Default is 0.'},
+        metadata={"help": "Set the drop path rate for the ViT. Default is 0."},
     )
-    ps_version: Literal['v1', 'v2'] = field(
-        default='v2',
-        metadata={'help': 'Specify the version of pixel shuffle implementation. Default is v2.'}
+    ps_version: Literal["v1", "v2"] = field(
+        default="v2",
+        metadata={
+            "help": "Specify the version of pixel shuffle implementation. Default is v2."
+        },
     )
     use_fast_tokenizer: bool = field(
         default=False,
-        metadata={'help': 'Set to True to use the fast mode of the tokenizer.'}
+        metadata={"help": "Set to True to use the fast mode of the tokenizer."},
     )
     use_liger: bool = field(
-        default=False,
-        metadata={'help': 'Set to True to use the liger kernel.'}
+        default=False, metadata={"help": "Set to True to use the liger kernel."}
     )
 
 
@@ -182,109 +198,132 @@ class DataTrainingArguments:
     """
     Arguments for specifying data input for training and evaluation.
     """
+
     max_seq_length: int = field(
         default=8192,
         metadata={
-            'help': (
-                'The maximum total input sequence length after tokenization. Sequences longer '
-                'than this will be truncated, sequences shorter will be padded.'
+            "help": (
+                "The maximum total input sequence length after tokenization. Sequences longer "
+                "than this will be truncated, sequences shorter will be padded."
             )
         },
     )
     force_image_size: int = field(
         default=448,
-        metadata={'help': 'Set the desired size for the image. Default is 448.'},
+        metadata={"help": "Set the desired size for the image. Default is 448."},
     )
     down_sample_ratio: float = field(
         default=0.5,
-        metadata={'help': 'Set the desired down-sampling ratio for the image. Default is 0.5.'},
+        metadata={
+            "help": "Set the desired down-sampling ratio for the image. Default is 0.5."
+        },
     )
     pad2square: bool = field(
         default=False,
-        metadata={'help': 'Pad the image to a square shape if set to True. Default is False.'},
+        metadata={
+            "help": "Pad the image to a square shape if set to True. Default is False."
+        },
     )
     conv_style: str = field(
-        default='internlm2-chat', metadata={'help': 'Prompt style for a conversation.'}
+        default="internlm2-chat", metadata={"help": "Prompt style for a conversation."}
     )
     meta_path: str = field(
         default=None,
-        metadata={'help': 'The path of the meta file of datasets.'},
+        metadata={"help": "The path of the meta file of datasets."},
     )
     use_data_resampling: bool = field(
         default=False,
-        metadata={'help': 'Set to True to use data resampling. Default is False.'},
+        metadata={"help": "Set to True to use data resampling. Default is False."},
     )
     dynamic_image_size: bool = field(
         default=False,
-        metadata={'help': 'Set to True to use dynamic high resolution strategy. Default is False.'},
+        metadata={
+            "help": "Set to True to use dynamic high resolution strategy. Default is False."
+        },
     )
     use_thumbnail: bool = field(
         default=False,
-        metadata={'help': 'Set to True to add a thumbnail image. Default is False.'},
+        metadata={"help": "Set to True to add a thumbnail image. Default is False."},
     )
     min_dynamic_patch: int = field(
         default=1,
-        metadata={'help': 'The minimum number of dynamic patches. Default is 1.'},
+        metadata={"help": "The minimum number of dynamic patches. Default is 1."},
     )
     max_dynamic_patch: int = field(
         default=12,
-        metadata={'help': 'The maximum number of dynamic patches. Default is 12.'},
+        metadata={"help": "The maximum number of dynamic patches. Default is 12."},
     )
     min_num_frame: int = field(
         default=8,
-        metadata={'help': 'The minimum number of frames for video data. Default is 8.'},
+        metadata={"help": "The minimum number of frames for video data. Default is 8."},
     )
     max_num_frame: int = field(
         default=32,
-        metadata={'help': 'The maximum number of frames for video data. Default is 32.'},
+        metadata={
+            "help": "The maximum number of frames for video data. Default is 32."
+        },
     )
-    normalize_type: Literal['imagenet', 'clip', 'siglip'] = field(
-        default='imagenet',
-        metadata={'help': 'The normalization type for the image. Default is imagenet.'},
+    normalize_type: Literal["imagenet", "clip", "siglip"] = field(
+        default="imagenet",
+        metadata={"help": "The normalization type for the image. Default is imagenet."},
     )
     use_packed_ds: bool = field(
         default=False,
-        metadata={'help': 'Whether to use packed dataset for efficient training. Default is False.'},
+        metadata={
+            "help": "Whether to use packed dataset for efficient training. Default is False."
+        },
     )
     force_shuffle: bool = field(
         default=True,
-        metadata={'help': 'Whether to shuffle the dataset. Default is True.'},
+        metadata={"help": "Whether to shuffle the dataset. Default is True."},
     )
     num_images_expected: int = field(
         default=40,
-        metadata={'help': 'The maximum number of images per packed sample. Default is 40.'},
+        metadata={
+            "help": "The maximum number of images per packed sample. Default is 40."
+        },
     )
     max_packed_tokens: int = field(
         default=8192,
-        metadata={'help': 'The required token length of per packed sample. Default is 8192.'},
+        metadata={
+            "help": "The required token length of per packed sample. Default is 8192."
+        },
     )
     max_buffer_size: int = field(
         default=20,
-        metadata={'help': 'The buffer size of the packed dataset. Default is 20.'},
+        metadata={"help": "The buffer size of the packed dataset. Default is 20."},
     )
     log_freq: int = field(
         default=1000,
-        metadata={'help': 'The log frequency of the packed dataset. Default is 1000.'},
+        metadata={"help": "The log frequency of the packed dataset. Default is 1000."},
     )
     strict_mode: bool = field(
         default=True,
-        metadata={'help': 'Whether to pad the number of images to satisfy num_images_expected. Default is True.'},
+        metadata={
+            "help": "Whether to pad the number of images to satisfy num_images_expected. Default is True."
+        },
     )
     replacement: bool = field(
         default=False,
-        metadata={'help': 'Whether to restart the dataset after it is exhausted. Default is False.'},
+        metadata={
+            "help": "Whether to restart the dataset after it is exhausted. Default is False."
+        },
     )
     allow_overflow: bool = field(
         default=False,
-        metadata={'help': 'Whether to drop the sample over the specified max_packed_tokens. Default is False.'},
+        metadata={
+            "help": "Whether to drop the sample over the specified max_packed_tokens. Default is False."
+        },
     )
     loss_reduction: str = field(
-        default='token',
-        metadata={'help': 'Loss reduction method. Default is token.'},
+        default="token",
+        metadata={"help": "Loss reduction method. Default is token."},
     )
     loss_reduction_all_gather: bool = field(
         default=False,
-        metadata={'help': 'Whether to gather all during loss reduction. Default is False.'},
+        metadata={
+            "help": "Whether to gather all during loss reduction. Default is False."
+        },
     )
 
 
@@ -308,9 +347,9 @@ class LazySupervisedDataset(Dataset):
         max_dynamic_patch=12,
         min_num_frame=8,  # for video data
         max_num_frame=32,  # for video data
-        sampling_method='rand',  # for video data
+        sampling_method="rand",  # for video data
         repeat_time=1,
-        normalize_type='imagenet',
+        normalize_type="imagenet",
         # hyperparameters for packed training
         use_packed_ds=False,
         data_rank=0,
@@ -324,10 +363,12 @@ class LazySupervisedDataset(Dataset):
         self.tokenizer = tokenizer
         self.template_name = template_name
         self.num_image_token = num_image_token
-        logger.info(f'[Dataset] num_image_token: {num_image_token}')
-        logger.info(f'[Dataset] dynamic_image_size: {dynamic_image_size}')
-        logger.info(f'[Dataset] use_thumbnail: {use_thumbnail}')
-        logger.info(f'[Dataset] min_dynamic_patch: {min_dynamic_patch}, max_dynamic_patch: {max_dynamic_patch}')
+        logger.info(f"[Dataset] num_image_token: {num_image_token}")
+        logger.info(f"[Dataset] dynamic_image_size: {dynamic_image_size}")
+        logger.info(f"[Dataset] use_thumbnail: {use_thumbnail}")
+        logger.info(
+            f"[Dataset] min_dynamic_patch: {min_dynamic_patch}, max_dynamic_patch: {max_dynamic_patch}"
+        )
 
         self.image_size = image_size
         self.is_train = is_train
@@ -345,18 +386,20 @@ class LazySupervisedDataset(Dataset):
         self.worker_distributed = False
         self.distributed_mode = distributed_mode
         # hyperparameters for packed dataset
-        self.dataset_type = 'pair'
+        self.dataset_type = "pair"
         self.max_num_images = 1
         self.max_tokens = tokenizer.model_max_length
         self.force_shuffle = force_shuffle
         # TODO: quick resume
         self._state_dict = {}
 
-        logger.info('Formatting inputs...Skip in lazy mode')
-        assert meta['annotation'].endswith('jsonl'), f'annotation must be jsonl, but got {meta["annotation"]}'
+        logger.info("Formatting inputs...Skip in lazy mode")
+        assert meta["annotation"].endswith("jsonl"), (
+            f"annotation must be jsonl, but got {meta['annotation']}"
+        )
 
-        annotation_path = meta['annotation']
-        with open(annotation_path, 'r') as f:
+        annotation_path = meta["annotation"]
+        with open(annotation_path, "r") as f:
             self.raw_data = f.readlines()
         self.raw_data = [line for line in self.raw_data if line.strip()]
         self.rng = np.random.default_rng(seed=random_seed)
@@ -364,14 +407,13 @@ class LazySupervisedDataset(Dataset):
             self.rng.shuffle(self.raw_data)
         if repeat_time < 1:
             # If repeat_time is less than 1, select a portion of the data
-            self.raw_data = self.raw_data[:int(len(self.raw_data) * repeat_time)]
+            self.raw_data = self.raw_data[: int(len(self.raw_data) * repeat_time)]
         if repeat_time > 1:
             assert isinstance(repeat_time, int)
             # Repeat the list if repeat_time is greater than 1
             self.raw_data = self.raw_data * repeat_time
 
-
-        self.root = meta['root']
+        self.root = meta["root"]
         self.cached_data_dict = {}
         self.group_by_length = group_by_length
         self.dynamic_image_size = dynamic_image_size
@@ -389,20 +431,29 @@ class LazySupervisedDataset(Dataset):
                 try:
                     data_item = json.loads(data_item)
                 except Exception as e:
-                    print(f'Failed to load data item: {data_item}, error: {e}')
+                    print(f"Failed to load data item: {data_item}, error: {e}")
                     continue
-                if 'length' in data_item:
-                    token_length = data_item['length']  # Use precomputed length if available
+                if "length" in data_item:
+                    token_length = data_item[
+                        "length"
+                    ]  # Use precomputed length if available
                 else:
                     # Compute token length using the tokenizer
-                    conversations = '\n'.join([temp['value'] for temp in data_item['conversations']])
+                    conversations = "\n".join(
+                        [temp["value"] for temp in data_item["conversations"]]
+                    )
                     str_length = len(conversations)
                     if str_length not in self.conv2length:
                         token_length = tokenizer(
-                            conversations, return_tensors='pt', padding=False, truncation=False,
+                            conversations,
+                            return_tensors="pt",
+                            padding=False,
+                            truncation=False,
                         ).input_ids.size(1)
-                        self.conv2length[str_length] = token_length + num_image_token * (
-                                    max_dynamic_patch + use_thumbnail)
+                        self.conv2length[str_length] = (
+                            token_length
+                            + num_image_token * (max_dynamic_patch + use_thumbnail)
+                        )
                     else:
                         token_length = self.conv2length[str_length]
                 self.length.append(token_length)
@@ -412,28 +463,32 @@ class LazySupervisedDataset(Dataset):
 
     def get_preprocess_function(self):
         # Select the appropriate preprocessing function based on the template name
-        if self.template_name == 'Hermes-2':
+        if self.template_name == "Hermes-2":
             preprocess_function = preprocess_mpt
-        elif self.template_name == 'internlm2-chat':
+        elif self.template_name == "internlm2-chat":
             preprocess_function = preprocess_internlm
-        elif self.template_name == 'phi3-chat':
+        elif self.template_name == "phi3-chat":
             preprocess_function = preprocess_phi3
-        elif self.template_name == 'internvl2_5':
+        elif self.template_name == "internvl2_5":
             preprocess_function = preprocess_internvl2_5
         else:
             preprocess_function = preprocess
         return preprocess_function
 
     def load_image(self, image_path):
-        return Image.open(image_path).convert('RGB')
+        return Image.open(image_path).convert("RGB")
 
     def get_image_path(self, image_path):
         return os.path.join(self.root, image_path)
 
     def get_transform(self):
         # Build transformation function
-        transform = build_transform(is_train=self.is_train, input_size=self.image_size,
-                                    pad2square=self.pad2square, normalize_type=self.normalize_type)
+        transform = build_transform(
+            is_train=self.is_train,
+            input_size=self.image_size,
+            pad2square=self.pad2square,
+            normalize_type=self.normalize_type,
+        )
         return transform
 
     def multi_modal_get_item(self, data_item):
@@ -441,18 +496,27 @@ class LazySupervisedDataset(Dataset):
         transform = self.get_transform()
 
         # Ensure the first conversation contains an image placeholder
-        if '<image>' not in data_item['conversations'][0]['value']:
-            data_item['conversations'][0]['value'] = '<image>\n' + data_item['conversations'][0]['value']
+        if "<image>" not in data_item["conversations"][0]["value"]:
+            data_item["conversations"][0]["value"] = (
+                "<image>\n" + data_item["conversations"][0]["value"]
+            )
 
         # Merge the image path
-        image_path = self.get_image_path(data_item['image'])
+        image_path = self.get_image_path(data_item["image"])
 
         # Load the image using tcs_loader if available, otherwise use PIL
         image = self.load_image(image_path)
 
-        if self.dynamic_image_size:  # If dynamic image size is enabled, preprocess the image dynamically
-            images = dynamic_preprocess(image, min_num=self.min_dynamic_patch, max_num=self.max_dynamic_patch,
-                                        image_size=self.image_size, use_thumbnail=self.use_thumbnail)
+        if (
+            self.dynamic_image_size
+        ):  # If dynamic image size is enabled, preprocess the image dynamically
+            images = dynamic_preprocess(
+                image,
+                min_num=self.min_dynamic_patch,
+                max_num=self.max_dynamic_patch,
+                image_size=self.image_size,
+                use_thumbnail=self.use_thumbnail,
+            )
         else:  # Otherwise, use the original image as a single patch
             images = [image]
 
@@ -463,31 +527,40 @@ class LazySupervisedDataset(Dataset):
         # Ensure that there is only one patch if dynamic image size is not enabled
         num_patches = pixel_values.size(0)
         if not self.dynamic_image_size:
-            assert num_patches == 1, f'The number of patches should be 1, but got {num_patches}.'
+            assert num_patches == 1, (
+                f"The number of patches should be 1, but got {num_patches}."
+            )
 
         # Select the appropriate preprocessing function based on the template name
         preprocess_function = self.get_preprocess_function()
 
         # Preprocess the conversations and generate the return dictionary
-        ret = preprocess_function(self.template_name, [deepcopy(data_item['conversations'])],
-                                  self.tokenizer, [self.num_image_token * num_patches],
-                                  group_by_length=self.group_by_length,
-                                  use_packed_ds=self.use_packed_ds, ds_name=self.ds_name)
+        ret = preprocess_function(
+            self.template_name,
+            [deepcopy(data_item["conversations"])],
+            self.tokenizer,
+            [self.num_image_token * num_patches],
+            group_by_length=self.group_by_length,
+            use_packed_ds=self.use_packed_ds,
+            ds_name=self.ds_name,
+        )
 
         # Calculate position_ids for packed dataset
-        position_ids = ret['attention_mask'].long().cumsum(-1) - 1
-        position_ids.masked_fill_(ret['attention_mask'] == 0, 1)
+        position_ids = ret["attention_mask"].long().cumsum(-1) - 1
+        position_ids.masked_fill_(ret["attention_mask"] == 0, 1)
         image_end_token_id = self.tokenizer.convert_tokens_to_ids(IMG_END_TOKEN)
-        assert (ret['input_ids'][0] == image_end_token_id).sum() == 1, f'image tokens are truncated, this dataset is {self.ds_name}'
+        assert (ret["input_ids"][0] == image_end_token_id).sum() == 1, (
+            f"image tokens are truncated, this dataset is {self.ds_name}"
+        )
 
         # Create the final return dictionary
         ret = dict(
-            input_ids=ret['input_ids'][0],
-            labels=ret['labels'][0],
-            attention_mask=ret['attention_mask'][0],
+            input_ids=ret["input_ids"][0],
+            labels=ret["labels"][0],
+            attention_mask=ret["attention_mask"][0],
             position_ids=position_ids[0],
             pixel_values=pixel_values,
-            image_flags=torch.tensor([1] * num_patches, dtype=torch.long)
+            image_flags=torch.tensor([1] * num_patches, dtype=torch.long),
         )
         return ret
 
@@ -496,17 +569,23 @@ class LazySupervisedDataset(Dataset):
         transform = self.get_transform()
 
         images, num_tiles = [], []
-        num_image = len(data_item['image'])
+        num_image = len(data_item["image"])
         # print(f'num_image: {num_image}')
-        for image_path in data_item['image']:
+        for image_path in data_item["image"]:
             # Merge the image path
             image_path = self.get_image_path(image_path)
             # Load the image using tcs_loader if available, otherwise use PIL
             image = self.load_image(image_path)
-            if self.dynamic_image_size:  # If dynamic image size is enabled, preprocess the image dynamically
-                image = dynamic_preprocess(image, min_num=self.min_dynamic_patch,
-                                           max_num=max(1, self.max_dynamic_patch // num_image),
-                                           image_size=self.image_size, use_thumbnail=self.use_thumbnail)
+            if (
+                self.dynamic_image_size
+            ):  # If dynamic image size is enabled, preprocess the image dynamically
+                image = dynamic_preprocess(
+                    image,
+                    min_num=self.min_dynamic_patch,
+                    max_num=max(1, self.max_dynamic_patch // num_image),
+                    image_size=self.image_size,
+                    use_thumbnail=self.use_thumbnail,
+                )
                 images += image
                 num_tiles.append(len(image))
             else:  # Otherwise, use the original image as a single patch
@@ -521,24 +600,33 @@ class LazySupervisedDataset(Dataset):
 
         # Preprocess the conversations and generate the return dictionary
         num_image_tokens = [self.num_image_token * num_tile for num_tile in num_tiles]
-        ret = preprocess_function(self.template_name, [deepcopy(data_item['conversations'])],
-                                  self.tokenizer, num_image_tokens, group_by_length=self.group_by_length,
-                                  use_packed_ds=self.use_packed_ds, ds_name=self.ds_name, num_image=num_image)
+        ret = preprocess_function(
+            self.template_name,
+            [deepcopy(data_item["conversations"])],
+            self.tokenizer,
+            num_image_tokens,
+            group_by_length=self.group_by_length,
+            use_packed_ds=self.use_packed_ds,
+            ds_name=self.ds_name,
+            num_image=num_image,
+        )
 
         # Calculate position_ids for packed dataset
-        position_ids = ret['attention_mask'].long().cumsum(-1) - 1
-        position_ids.masked_fill_(ret['attention_mask'] == 0, 1)
+        position_ids = ret["attention_mask"].long().cumsum(-1) - 1
+        position_ids.masked_fill_(ret["attention_mask"] == 0, 1)
         image_end_token_id = self.tokenizer.convert_tokens_to_ids(IMG_END_TOKEN)
-        assert (ret['input_ids'][0] == image_end_token_id).sum() == num_image, f'image tokens are truncated, this dataset is {self.ds_name}'
+        assert (ret["input_ids"][0] == image_end_token_id).sum() == num_image, (
+            f"image tokens are truncated, this dataset is {self.ds_name}"
+        )
 
         # Create the final return dictionary
         ret = dict(
-            input_ids=ret['input_ids'][0],
-            labels=ret['labels'][0],
-            attention_mask=ret['attention_mask'][0],
+            input_ids=ret["input_ids"][0],
+            labels=ret["labels"][0],
+            attention_mask=ret["attention_mask"][0],
             position_ids=position_ids[0],
             pixel_values=pixel_values,
-            image_flags=torch.tensor([1] * num_patches, dtype=torch.long)
+            image_flags=torch.tensor([1] * num_patches, dtype=torch.long),
         )
         return ret
 
@@ -547,25 +635,38 @@ class LazySupervisedDataset(Dataset):
         transform = self.get_transform()
 
         # Ensure the first conversation contains a video placeholder
-        if '<video>' not in data_item['conversations'][0]['value']:
-            data_item['conversations'][0]['value'] = '<video>\n' + data_item['conversations'][0]['value']
+        if "<video>" not in data_item["conversations"][0]["value"]:
+            data_item["conversations"][0]["value"] = (
+                "<video>\n" + data_item["conversations"][0]["value"]
+            )
 
         # Get the video file path
-        video_file = data_item['video']
+        video_file = data_item["video"]
         video_path = os.path.join(self.root, video_file)
 
-        if video_path.endswith('.gif'):
-            image_list = read_frames_gif(video_path, num_frames=self.max_num_frame,
-                                         min_num_frames=self.min_num_frame, sample=self.sampling_method)
+        if video_path.endswith(".gif"):
+            image_list = read_frames_gif(
+                video_path,
+                num_frames=self.max_num_frame,
+                min_num_frames=self.min_num_frame,
+                sample=self.sampling_method,
+            )
         else:
-            image_list = read_frames_decord(video_path, num_frames=self.max_num_frame,
-                                            min_num_frames=self.min_num_frame, sample=self.sampling_method,
-                                            clip=data_item.get('clip', None))
+            image_list = read_frames_decord(
+                video_path,
+                num_frames=self.max_num_frame,
+                min_num_frames=self.min_num_frame,
+                sample=self.sampling_method,
+                clip=data_item.get("clip", None),
+            )
 
         # Generate special tokens for each video frame
-        special_tokens = '\n'.join(['Frame-{}: <image>'.format(i + 1) for i in range(len(image_list))])
-        data_item['conversations'][0]['value'] = data_item['conversations'][0]['value'].replace(
-            '<video>\n', special_tokens + '\n')
+        special_tokens = "\n".join(
+            ["Frame-{}: <image>".format(i + 1) for i in range(len(image_list))]
+        )
+        data_item["conversations"][0]["value"] = data_item["conversations"][0][
+            "value"
+        ].replace("<video>\n", special_tokens + "\n")
 
         # Transform each frame image and stack them into a tensor
         pixel_values = [transform(image) for image in image_list]
@@ -577,22 +678,29 @@ class LazySupervisedDataset(Dataset):
 
         # Preprocess the conversations and generate the return dictionary
         num_image_tokens = [self.num_image_token] * num_patches
-        ret = preprocess_function(self.template_name, [deepcopy(data_item['conversations'])],
-                                  self.tokenizer, num_image_tokens, group_by_length=self.group_by_length,
-                                  use_packed_ds=self.use_packed_ds, ds_name=self.ds_name, num_image=num_patches)
+        ret = preprocess_function(
+            self.template_name,
+            [deepcopy(data_item["conversations"])],
+            self.tokenizer,
+            num_image_tokens,
+            group_by_length=self.group_by_length,
+            use_packed_ds=self.use_packed_ds,
+            ds_name=self.ds_name,
+            num_image=num_patches,
+        )
 
         # Calculate position_ids for packed dataset
-        position_ids = ret['attention_mask'].long().cumsum(-1) - 1
-        position_ids.masked_fill_(ret['attention_mask'] == 0, 1)
+        position_ids = ret["attention_mask"].long().cumsum(-1) - 1
+        position_ids.masked_fill_(ret["attention_mask"] == 0, 1)
 
         # Create the final return dictionary
         ret = dict(
-            input_ids=ret['input_ids'][0],
-            labels=ret['labels'][0],
-            attention_mask=ret['attention_mask'][0],
+            input_ids=ret["input_ids"][0],
+            labels=ret["labels"][0],
+            attention_mask=ret["attention_mask"][0],
             position_ids=position_ids[0],
             pixel_values=pixel_values,
-            image_flags=torch.tensor([1] * num_patches, dtype=torch.long)
+            image_flags=torch.tensor([1] * num_patches, dtype=torch.long),
         )
         return ret
 
@@ -601,11 +709,16 @@ class LazySupervisedDataset(Dataset):
         transform = self.get_transform()
 
         # Create a blank white image
-        image = Image.new('RGB', (224, 224), (255, 255, 255))
+        image = Image.new("RGB", (224, 224), (255, 255, 255))
 
         # Dynamically preprocess the image to generate patches
-        images = dynamic_preprocess(image, min_num=self.min_dynamic_patch, max_num=1,
-                                    image_size=self.image_size, use_thumbnail=self.use_thumbnail)
+        images = dynamic_preprocess(
+            image,
+            min_num=self.min_dynamic_patch,
+            max_num=1,
+            image_size=self.image_size,
+            use_thumbnail=self.use_thumbnail,
+        )
 
         # Apply the transformation to each image patch and stack them into a tensor
         pixel_values = [transform(image) for image in images]
@@ -613,29 +726,37 @@ class LazySupervisedDataset(Dataset):
         num_patches = pixel_values.size(0)
 
         # Ensure there is only one patch
-        assert num_patches == 1, f'The number of patches should be 1, but got {num_patches}.'
+        assert num_patches == 1, (
+            f"The number of patches should be 1, but got {num_patches}."
+        )
 
         # Select the appropriate preprocessing function based on the template name
         preprocess_function = self.get_preprocess_function()
 
         # Preprocess the conversations and generate the return dictionary
-        ret = preprocess_function(self.template_name, [deepcopy(data_item['conversations'])],
-                                  self.tokenizer, [self.num_image_token * num_patches], text_only=True,
-                                  group_by_length=self.group_by_length, use_packed_ds=self.use_packed_ds,
-                                  ds_name=self.ds_name)
+        ret = preprocess_function(
+            self.template_name,
+            [deepcopy(data_item["conversations"])],
+            self.tokenizer,
+            [self.num_image_token * num_patches],
+            text_only=True,
+            group_by_length=self.group_by_length,
+            use_packed_ds=self.use_packed_ds,
+            ds_name=self.ds_name,
+        )
 
         # Calculate position_ids for packed dataset
-        position_ids = ret['attention_mask'].long().cumsum(-1) - 1
-        position_ids.masked_fill_(ret['attention_mask'] == 0, 1)
+        position_ids = ret["attention_mask"].long().cumsum(-1) - 1
+        position_ids.masked_fill_(ret["attention_mask"] == 0, 1)
 
         # Create the final return dictionary
         ret = dict(
-            input_ids=ret['input_ids'][0],
-            labels=ret['labels'][0],
-            attention_mask=ret['attention_mask'][0],
+            input_ids=ret["input_ids"][0],
+            labels=ret["labels"][0],
+            attention_mask=ret["attention_mask"][0],
             position_ids=position_ids[0],
             pixel_values=pixel_values,
-            image_flags=torch.tensor([0] * num_patches, dtype=torch.long)
+            image_flags=torch.tensor([0] * num_patches, dtype=torch.long),
         )
         return ret
 
@@ -646,8 +767,10 @@ class LazySupervisedDataset(Dataset):
             and self.worker_id is not None
         ):
             self.worker_distributed = True
-            self.raw_data = self.raw_data[self.worker_id::self.num_workers]
-            logger.info(f'worker_distributed is enabled, {self.num_workers=}, {len(self.raw_data)=}')
+            self.raw_data = self.raw_data[self.worker_id :: self.num_workers]
+            logger.info(
+                f"worker_distributed is enabled, {self.num_workers=}, {len(self.raw_data)=}"
+            )
 
     def __getitem__(self, i) -> Dict[str, torch.Tensor]:
         if i >= len(self.raw_data):
@@ -667,12 +790,16 @@ class LazySupervisedDataset(Dataset):
                 data_item = json.loads(self.raw_data[i])
                 # conversations = data_item['conversations']
                 # check_conversations_repetition(conversations, repeat_threshold=0.4, ngram=10)
-                if 'image' in data_item and len(data_item['image']) != 0:
-                    if type(data_item['image']) == list:
+                if "image" in data_item and len(data_item["image"]) != 0:
+                    if type(data_item["image"]) == list:
                         ret = self.multi_modal_multi_image_get_item(data_item)
                     else:
                         ret = self.multi_modal_get_item(data_item)
-                elif 'video' in data_item and data_item['video'] is not None and data_item['video'] != '':
+                elif (
+                    "video" in data_item
+                    and data_item["video"] is not None
+                    and data_item["video"] != ""
+                ):
                     ret = self.video_get_item(data_item)
                 else:
                     ret = self.pure_text_get_item(data_item)
@@ -686,18 +813,29 @@ class LazySupervisedDataset(Dataset):
                 try:
                     if self.raw_data[i].strip():
                         data_item = json.loads(self.raw_data[i])
-                        if 'image' in data_item:
-                            if type(data_item['image']) == list:
-                                images = [os.path.join(self.root, item) for item in data_item['image']]
-                                print(f'Failed to load image: {images}, the dataset is: {self.ds_name}')
+                        if "image" in data_item:
+                            if type(data_item["image"]) == list:
+                                images = [
+                                    os.path.join(self.root, item)
+                                    for item in data_item["image"]
+                                ]
+                                print(
+                                    f"Failed to load image: {images}, the dataset is: {self.ds_name}"
+                                )
                             else:
-                                data_path = os.path.join(self.root, data_item['image'])
-                                print(f'Failed to load image: {data_path}, the dataset is: {self.ds_name}')
-                        elif 'video' in data_item:
-                            data_path = os.path.join(self.root, data_item['video'])
-                            print(f'Failed to load video: {data_path}, the dataset is: {self.ds_name}')
+                                data_path = os.path.join(self.root, data_item["image"])
+                                print(
+                                    f"Failed to load image: {data_path}, the dataset is: {self.ds_name}"
+                                )
+                        elif "video" in data_item:
+                            data_path = os.path.join(self.root, data_item["video"])
+                            print(
+                                f"Failed to load video: {data_path}, the dataset is: {self.ds_name}"
+                            )
                 except Exception:
-                    print(f'Failed to load data: {self.raw_data[i]}, the dataset is: {self.ds_name}')
+                    print(
+                        f"Failed to load data: {self.raw_data[i]}, the dataset is: {self.ds_name}"
+                    )
                 i = random.randint(0, len(self.raw_data) - 1)
         return ret
 
@@ -706,15 +844,18 @@ class LazySupervisedDataset(Dataset):
         start_idx = 0
 
         assert self.worker_state_key is not None
-        if self.worker_state_key in self._state_dict and len(self._state_dict[self.worker_state_key]) > 0:
-            start_idx = self._state_dict[self.worker_state_key]['current_idx']
+        if (
+            self.worker_state_key in self._state_dict
+            and len(self._state_dict[self.worker_state_key]) > 0
+        ):
+            start_idx = self._state_dict[self.worker_state_key]["current_idx"]
 
             self._state_dict.pop(self.worker_state_key)
 
         if self.worker_id == 0:
             logger.info(
-                f'[{self.ds_name}] [Worker id {self.worker_id}] '
-                f'begin to iter with {start_idx=}'
+                f"[{self.ds_name}] [Worker id {self.worker_id}] "
+                f"begin to iter with {start_idx=}"
             )
 
         for i in range(start_idx, len(self)):
@@ -732,7 +873,7 @@ def build_datasets(
     max_dynamic_patch=12,
     min_num_frame=8,
     max_num_frame=32,
-    normalize_type='imagenet',
+    normalize_type="imagenet",
 ):
     datasets = []
     lengths = []
@@ -740,25 +881,30 @@ def build_datasets(
     data_world_size = dist.get_world_size()
     meta_text = open(data_args.meta_path).read()
     training_root = os.environ.get(
-        'TRAINING_ROOT',
-        os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..')),
+        "TRAINING_ROOT",
+        os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "..")
+        ),
     )
-    meta_text = meta_text.replace('__TRAINING_ROOT__', training_root)
+    meta_text = meta_text.replace("__TRAINING_ROOT__", training_root)
     ds_collections = json.loads(meta_text)
     for ds_idx, ds_name in enumerate(ds_collections.keys()):
-        repeat_time = ds_collections[ds_name]['repeat_time']
-        if 'max_dynamic_patch' in ds_collections[ds_name]:
-            max_num = ds_collections[ds_name]['max_dynamic_patch']
-            logger.info(f'max_dynamic_patch is set to {max_num} according to the meta file')
+        repeat_time = ds_collections[ds_name]["repeat_time"]
+        if "max_dynamic_patch" in ds_collections[ds_name]:
+            max_num = ds_collections[ds_name]["max_dynamic_patch"]
+            logger.info(
+                f"max_dynamic_patch is set to {max_num} according to the meta file"
+            )
         else:
             max_num = max_dynamic_patch
         dataset = LazySupervisedDataset(
-            data_args.conv_style, ds_collections[ds_name],
+            data_args.conv_style,
+            ds_collections[ds_name],
             tokenizer,
             ds_name=ds_name,
             num_image_token=model.num_image_token,
             image_size=data_args.force_image_size,
-            is_train=ds_collections[ds_name]['data_augment'],
+            is_train=ds_collections[ds_name]["data_augment"],
             pad2square=data_args.pad2square,
             group_by_length=group_by_length and not data_args.use_packed_ds,
             dynamic_image_size=dynamic_image_size,
@@ -777,7 +923,7 @@ def build_datasets(
             force_shuffle=data_args.force_shuffle,
             random_seed=ds_idx,
         )
-        logger.info(f'Add dataset: {ds_name} with length: {len(dataset)}')
+        logger.info(f"Add dataset: {ds_name} with length: {len(dataset)}")
         datasets.append(dataset)
         if data_args.use_data_resampling:
             lengths.append(math.sqrt(len(dataset)))
@@ -813,12 +959,12 @@ def build_datasets(
 def len2weight(x, loss_reduction):
     if x == 0:
         return x
-    if loss_reduction == 'token':
+    if loss_reduction == "token":
         return 1
-    if loss_reduction == 'sample':
+    if loss_reduction == "sample":
         return 1 / x
-    if loss_reduction == 'square':
-        return 1 / (x ** 0.5)
+    if loss_reduction == "square":
+        return 1 / (x**0.5)
     raise NotImplementedError(loss_reduction)
 
 
@@ -831,13 +977,17 @@ def main():
     # Parse input arguments
     # See all possible arguments in src/transformers/training_args.py
     # If use DeepSpeed zero3, init_dist must before HfArgumentParser
-    launcher = os.environ.get('LAUNCHER', 'slurm')
-    init_dist(launcher=launcher, backend='nccl')
-    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
-    if len(sys.argv) == 2 and sys.argv[1].endswith('.json'):
+    launcher = os.environ.get("LAUNCHER", "slurm")
+    init_dist(launcher=launcher, backend="nccl")
+    parser = HfArgumentParser(
+        (ModelArguments, DataTrainingArguments, TrainingArguments)
+    )
+    if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
         # If we pass only one argument to the script, and it's the path to a json file,
         # let's parse it to get our arguments.
-        model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
+        model_args, data_args, training_args = parser.parse_json_file(
+            json_file=os.path.abspath(sys.argv[1])
+        )
     else:
         model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
@@ -849,8 +999,8 @@ def main():
 
     # Setup logging
     logging.basicConfig(
-        format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
-        datefmt='%m/%d/%Y %H:%M:%S',
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+        datefmt="%m/%d/%Y %H:%M:%S",
         handlers=[logging.StreamHandler(sys.stdout)],
     )
 
@@ -866,38 +1016,56 @@ def main():
 
     # Log on each process the small summary:
     logger.warning(
-        f'Process rank: {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}'
-        + f'distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}'
+        f"Process rank: {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}"
+        + f"distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}"
     )
-    logger.info(f'Training/evaluation parameters {training_args}')
+    logger.info(f"Training/evaluation parameters {training_args}")
 
     # Detecting last checkpoint and eventually continue from last checkpoint.
     last_checkpoint = None
-    if os.path.isdir(training_args.output_dir) and training_args.do_train and not training_args.overwrite_output_dir:
+    if (
+        os.path.isdir(training_args.output_dir)
+        and training_args.do_train
+        and not training_args.overwrite_output_dir
+    ):
         last_checkpoint = get_last_checkpoint(training_args.output_dir)
         if last_checkpoint is None and len(os.listdir(training_args.output_dir)) > 0:
             raise ValueError(
-                f'Output directory ({training_args.output_dir}) already exists and is not empty. '
-                'Use --overwrite_output_dir to overcome.'
+                f"Output directory ({training_args.output_dir}) already exists and is not empty. "
+                "Use --overwrite_output_dir to overcome."
             )
-        elif last_checkpoint is not None and training_args.resume_from_checkpoint is None:
+        elif (
+            last_checkpoint is not None and training_args.resume_from_checkpoint is None
+        ):
             logger.info(
-                f'Checkpoint detected, resuming training at {last_checkpoint}. To avoid this behavior, change '
-                'the `--output_dir` or add `--overwrite_output_dir` to train from scratch.'
+                f"Checkpoint detected, resuming training at {last_checkpoint}. To avoid this behavior, change "
+                "the `--output_dir` or add `--overwrite_output_dir` to train from scratch."
             )
     # Set seed before initializing model.
     set_seed(training_args.seed)
 
     # Load pretrained model, tokenizer, and image processor
     tokenizer_path = model_args.model_name_or_path or model_args.llm_path
-    logger.info(f'Loading Tokenizer: {tokenizer_path}')
+    logger.info(f"Loading Tokenizer: {tokenizer_path}")
     tokenizer = AutoTokenizer.from_pretrained(
-        tokenizer_path, add_eos_token=False, trust_remote_code=True, use_fast=model_args.use_fast_tokenizer)
+        tokenizer_path,
+        add_eos_token=False,
+        trust_remote_code=True,
+        use_fast=model_args.use_fast_tokenizer,
+    )
     tokenizer.tokenizer_path = tokenizer_path
     tokenizer.model_max_length = data_args.max_seq_length
-    token_list = [IMG_START_TOKEN, IMG_END_TOKEN, IMG_CONTEXT_TOKEN,
-                  QUAD_START_TOKEN, QUAD_END_TOKEN, REF_START_TOKEN,
-                  REF_END_TOKEN, BOX_START_TOKEN, BOX_END_TOKEN]
+    token_list = [
+        IMG_START_TOKEN,
+        IMG_END_TOKEN,
+        IMG_CONTEXT_TOKEN,
+        QUAD_START_TOKEN,
+        QUAD_END_TOKEN,
+        REF_START_TOKEN,
+        REF_END_TOKEN,
+        BOX_START_TOKEN,
+        BOX_END_TOKEN,
+    ]
     num_new_tokens = tokenizer.add_tokens(token_list, special_tokens=True)
     img_context_token_id = tokenizer.convert_tokens_to_ids(IMG_CONTEXT_TOKEN)
 
@@ -913,20 +1081,21 @@ def main():
             apply_liger_kernel_to_llama,
             apply_liger_kernel_to_qwen2,
         )
+
         apply_liger_kernel_to_llama()
         apply_liger_kernel_to_qwen2()
         # apply_liger_kernel_to_internvit()
 
     if model_args.model_name_or_path is not None:
-        logger.info('Loading InternVLChatModel...')
+        logger.info("Loading InternVLChatModel...")
         config = InternVLChatConfig.from_pretrained(model_args.model_name_or_path)
         config.vision_config.drop_path_rate = model_args.drop_path_rate
-        if config.llm_config.model_type == 'internlm2':
-            config.llm_config.attn_implementation = 'flash_attention_2'  # for InternLM
-            logger.info('Using flash_attention_2 for InternLM')
+        if config.llm_config.model_type == "internlm2":
+            config.llm_config.attn_implementation = "flash_attention_2"  # for InternLM
+            logger.info("Using flash_attention_2 for InternLM")
         else:
-            config.llm_config._attn_implementation = 'flash_attention_2'  # for LLaMA
-            logger.info('Using flash_attention_2 for LLaMA')
+            config.llm_config._attn_implementation = "flash_attention_2"  # for LLaMA
+            logger.info("Using flash_attention_2 for LLaMA")
         config.template = data_args.conv_style
         config.select_layer = model_args.vision_select_layer
         config.dynamic_image_size = data_args.dynamic_image_size
@@ -935,66 +1104,91 @@ def main():
         config.min_dynamic_patch = data_args.min_dynamic_patch
         config.max_dynamic_patch = data_args.max_dynamic_patch
         model = InternVLChatModel.from_pretrained(
-            model_args.model_name_or_path, torch_dtype=torch.bfloat16, config=config)
+            model_args.model_name_or_path, torch_dtype=torch.bfloat16, config=config
+        )
     else:
-        logger.info('Loading ViT-6B...')
+        logger.info("Loading ViT-6B...")
         vision_config = InternVisionConfig.from_pretrained(model_args.vision_path)
         vision_config.drop_path_rate = model_args.drop_path_rate
         vision_model = InternVisionModel.from_pretrained(
-            model_args.vision_path, torch_dtype=torch.bfloat16, config=vision_config)
-        logger.info('Loading LLaMA...')
-        llm_config = AutoConfig.from_pretrained(model_args.llm_path, trust_remote_code=True)
-        if llm_config.model_type == 'internlm2':
+            model_args.vision_path, torch_dtype=torch.bfloat16, config=vision_config
+        )
+        logger.info("Loading LLaMA...")
+        llm_config = AutoConfig.from_pretrained(
+            model_args.llm_path, trust_remote_code=True
+        )
+        if llm_config.model_type == "internlm2":
             model_type = InternLM2ForCausalLM
-            llm_config.attn_implementation = 'flash_attention_2'  # for InternLM
-            logger.info('Using flash_attention_2 for InternLM')
+            llm_config.attn_implementation = "flash_attention_2"  # for InternLM
+            logger.info("Using flash_attention_2 for InternLM")
         else:
             model_type = AutoModelForCausalLM
-            llm_config._attn_implementation = 'flash_attention_2'  # for LLaMA
-            logger.info('Using flash_attention_2 for LLaMA')
+            llm_config._attn_implementation = "flash_attention_2"  # for LLaMA
+            logger.info("Using flash_attention_2 for LLaMA")
         llm = model_type.from_pretrained(
-            model_args.llm_path, torch_dtype=torch.bfloat16,
-            config=llm_config, trust_remote_code=True)
-        logger.info('Building InternVLChatConfig...')
+            model_args.llm_path,
+            torch_dtype=torch.bfloat16,
+            config=llm_config,
+            trust_remote_code=True,
+        )
+        logger.info("Building InternVLChatConfig...")
         internvl_chat_config = InternVLChatConfig(
-            vision_config.to_dict(), llm_config.to_dict(), downsample_ratio=data_args.down_sample_ratio,
-            pad2square=data_args.pad2square, template=data_args.conv_style,
-            select_layer=model_args.vision_select_layer, dynamic_image_size=data_args.dynamic_image_size,
-            use_thumbnail=data_args.use_thumbnail, ps_version=model_args.ps_version,
-            min_dynamic_patch=data_args.min_dynamic_patch, max_dynamic_patch=data_args.max_dynamic_patch)
+            vision_config.to_dict(),
+            llm_config.to_dict(),
+            downsample_ratio=data_args.down_sample_ratio,
+            pad2square=data_args.pad2square,
+            template=data_args.conv_style,
+            select_layer=model_args.vision_select_layer,
+            dynamic_image_size=data_args.dynamic_image_size,
+            use_thumbnail=data_args.use_thumbnail,
+            ps_version=model_args.ps_version,
+            min_dynamic_patch=data_args.min_dynamic_patch,
+            max_dynamic_patch=data_args.max_dynamic_patch,
+        )
         internvl_chat_config.force_image_size = data_args.force_image_size
-        logger.info('Building InternVLChatModel...')
+        logger.info("Building InternVLChatModel...")
         model = InternVLChatModel(internvl_chat_config, vision_model, llm)
     model.img_context_token_id = img_context_token_id
 
     assert model.config.downsample_ratio == data_args.down_sample_ratio
 
     if model_args.mlp_path is not None:
-        logger.info('Loading pretrained MLP projector...')
-        state_dict = torch.load(model_args.mlp_path, map_location='cpu')
+        logger.info("Loading pretrained MLP projector...")
+        state_dict = torch.load(model_args.mlp_path, map_location="cpu")
         message = model.mlp1.load_state_dict(state_dict)
         logger.info(message)
-    logger.info('Finished')
+    logger.info("Finished")
 
     patch_size = model.config.vision_config.patch_size
-    logger.info(f'model.config.force_image_size: {model.config.force_image_size}')
-    logger.info(f'data_args.force_image_size: {data_args.force_image_size}')
-    logger.info(f'model.config.vision_config.image_size: {model.config.vision_config.image_size}')
+    logger.info(f"model.config.force_image_size: {model.config.force_image_size}")
+    logger.info(f"data_args.force_image_size: {data_args.force_image_size}")
+    logger.info(
+        f"model.config.vision_config.image_size: {model.config.vision_config.image_size}"
+    )
     if model.config.vision_config.image_size != data_args.force_image_size:
-        logger.info(f'Resizing position embedding from '
-                    f'{model.config.vision_config.image_size} '
-                    f'to {data_args.force_image_size}...')
-        model.vision_model.resize_pos_embeddings(old_size=model.config.vision_config.image_size,
-                                                 new_size=data_args.force_image_size,
-                                                 patch_size=patch_size)
+        logger.info(
+            f"Resizing position embedding from "
+            f"{model.config.vision_config.image_size} "
+            f"to {data_args.force_image_size}..."
+        )
+        model.vision_model.resize_pos_embeddings(
+            old_size=model.config.vision_config.image_size,
+            new_size=data_args.force_image_size,
+            patch_size=patch_size,
+        )
         model.config.vision_config.image_size = data_args.force_image_size
     model.config.force_image_size = data_args.force_image_size
-    model.num_image_token = int((data_args.force_image_size // patch_size) ** 2 * (data_args.down_sample_ratio ** 2))
+    model.num_image_token = int(
+        (data_args.force_image_size // patch_size) ** 2
+        * (data_args.down_sample_ratio**2)
+    )
 
     if num_new_tokens > 0:
         model.language_model.resize_token_embeddings(len(tokenizer))
         output_embeddings = model.language_model.get_output_embeddings().weight.data
-        output_embeddings_avg = output_embeddings[:-num_new_tokens].mean(dim=0, keepdim=True)
+        output_embeddings_avg = output_embeddings[:-num_new_tokens].mean(
+            dim=0, keepdim=True
+        )
         output_embeddings[-num_new_tokens:] = output_embeddings_avg
 
         model.config.llm_config.vocab_size = len(tokenizer)
@@ -1007,11 +1201,18 @@ def main():
         model.language_model._set_gradient_checkpointing()
 
     train_dataset = build_datasets(
-        data_args, tokenizer, model, group_by_length=training_args.group_by_length,
-        dynamic_image_size=data_args.dynamic_image_size, use_thumbnail=data_args.use_thumbnail,
-        min_dynamic_patch=data_args.min_dynamic_patch, max_dynamic_patch=data_args.max_dynamic_patch,
-        normalize_type=data_args.normalize_type, min_num_frame=data_args.min_num_frame,
-        max_num_frame=data_args.max_num_frame)
+        data_args,
+        tokenizer,
+        model,
+        group_by_length=training_args.group_by_length,
+        dynamic_image_size=data_args.dynamic_image_size,
+        use_thumbnail=data_args.use_thumbnail,
+        min_dynamic_patch=data_args.min_dynamic_patch,
+        max_dynamic_patch=data_args.max_dynamic_patch,
+        normalize_type=data_args.normalize_type,
+        min_num_frame=data_args.min_num_frame,
+        max_num_frame=data_args.max_num_frame,
+    )
 
     def _freeze_params(module):
         for param in module.parameters():
@@ -1029,20 +1230,24 @@ def main():
         model.language_model.lm_head.requires_grad = True
 
     if model_args.use_backbone_lora:
-        model.wrap_backbone_lora(r=model_args.use_backbone_lora, lora_alpha=2 * model_args.use_backbone_lora)
+        model.wrap_backbone_lora(
+            r=model_args.use_backbone_lora, lora_alpha=2 * model_args.use_backbone_lora
+        )
         model.config.use_backbone_lora = model_args.use_backbone_lora
 
     if model_args.use_llm_lora:
-        model.wrap_llm_lora(r=model_args.use_llm_lora, lora_alpha=2 * model_args.use_llm_lora)
+        model.wrap_llm_lora(
+            r=model_args.use_llm_lora, lora_alpha=2 * model_args.use_llm_lora
+        )
         model.config.use_llm_lora = model_args.use_llm_lora
 
     if model_args.freeze_mlp:
         _freeze_params(model.mlp1)
 
     if model_args.unfreeze_vit_layers != 0:
-        layers = model.vision_model.encoder.layers[model_args.unfreeze_vit_layers:]
+        layers = model.vision_model.encoder.layers[model_args.unfreeze_vit_layers :]
         for k, v in layers.named_parameters():
-            logger.info(f'Unfreezing ViT layer: {k}')
+            logger.info(f"Unfreezing ViT layer: {k}")
             v.requires_grad = True
 
     # print trainable parameters
@@ -1093,14 +1298,14 @@ def main():
 
         metrics = train_result.metrics
         try:
-            metrics['train_samples'] = len(train_dataset)
+            metrics["train_samples"] = len(train_dataset)
         except:
-            metrics['train_samples'] = -1
+            metrics["train_samples"] = -1
 
-        trainer.log_metrics('train', metrics)
-        trainer.save_metrics('train', metrics)
+        trainer.log_metrics("train", metrics)
+        trainer.save_metrics("train", metrics)
         trainer.save_state()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -13,7 +13,6 @@ from internvl.model.phi3.modeling_phi3 import (
 
 
 class Phi3FlashAttention2ForPackedTraining(Phi3FlashAttention2):
-
     def _flash_attention_forward(
         self,
         query_states,
@@ -53,10 +52,12 @@ class Phi3FlashAttention2ForPackedTraining(Phi3FlashAttention2):
         cu_seqlens = attention_mask.squeeze(0)
 
         with torch.no_grad():
-            max_seqlen = max([
-                cu_seqlens[idx+1] - cu_seqlens[idx]
-                for idx in range(cu_seqlens.size(0) - 1)
-            ]).item()
+            max_seqlen = max(
+                [
+                    cu_seqlens[idx + 1] - cu_seqlens[idx]
+                    for idx in range(cu_seqlens.size(0) - 1)
+                ]
+            ).item()
 
         if not self._flash_attn_uses_top_left_mask:
             causal = self.is_causal
@@ -103,5 +104,5 @@ class Phi3FlashAttention2ForPackedTraining(Phi3FlashAttention2):
 
 
 def replace_phi3_attention_class():
-    PHI3_ATTENTION_CLASSES['flash_attention_2'] = Phi3FlashAttention2ForPackedTraining
-    print('Replace PHI3_ATTENTION_CLASSES to support packed training!!')
+    PHI3_ATTENTION_CLASSES["flash_attention_2"] = Phi3FlashAttention2ForPackedTraining
+    print("Replace PHI3_ATTENTION_CLASSES to support packed training!!")

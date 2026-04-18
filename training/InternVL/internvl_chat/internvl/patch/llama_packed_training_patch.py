@@ -14,7 +14,6 @@ from transformers.models.llama.modeling_llama import (
 
 # Modified from transformers.models.llama.modeling_llama.LlamaFlashAttention2
 class LlamaFlashAttention2ForPackedTraining(LlamaFlashAttention2):
-
     def _flash_attention_forward(
         self,
         query_states,
@@ -54,10 +53,12 @@ class LlamaFlashAttention2ForPackedTraining(LlamaFlashAttention2):
         cu_seqlens = attention_mask.squeeze(0)
 
         with torch.no_grad():
-            max_seqlen = max([
-                cu_seqlens[idx+1] - cu_seqlens[idx]
-                for idx in range(cu_seqlens.size(0) - 1)
-            ]).item()
+            max_seqlen = max(
+                [
+                    cu_seqlens[idx + 1] - cu_seqlens[idx]
+                    for idx in range(cu_seqlens.size(0) - 1)
+                ]
+            ).item()
 
         if not self._flash_attn_uses_top_left_mask:
             causal = self.is_causal
@@ -104,5 +105,5 @@ class LlamaFlashAttention2ForPackedTraining(LlamaFlashAttention2):
 
 
 def replace_llama_attention_class():
-    LLAMA_ATTENTION_CLASSES['flash_attention_2'] = LlamaFlashAttention2ForPackedTraining
-    print('Replace LLAMA_ATTENTION_CLASSES to support packed training!!')
+    LLAMA_ATTENTION_CLASSES["flash_attention_2"] = LlamaFlashAttention2ForPackedTraining
+    print("Replace LLAMA_ATTENTION_CLASSES to support packed training!!")

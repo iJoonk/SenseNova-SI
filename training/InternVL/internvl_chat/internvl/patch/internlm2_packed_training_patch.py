@@ -15,9 +15,15 @@ from internvl.model.internlm2.modeling_internlm2 import (
 
 # Modified from internvl.model.internlm2.modeling_internlm2.InternLM2FlashAttention2
 class InternLM2FlashAttention2ForPackedTraining(InternLM2FlashAttention2):
-
     def _flash_attention_forward(
-            self, query_states, key_states, value_states, attention_mask, query_length, dropout=0.0, softmax_scale=None
+        self,
+        query_states,
+        key_states,
+        value_states,
+        attention_mask,
+        query_length,
+        dropout=0.0,
+        softmax_scale=None,
     ):
         """
         Calls the forward method of Flash Attention - if the input hidden states contain at least one padding token
@@ -45,10 +51,12 @@ class InternLM2FlashAttention2ForPackedTraining(InternLM2FlashAttention2):
         cu_seqlens = attention_mask.squeeze(0)
 
         with torch.no_grad():
-            max_seqlen = max([
-                cu_seqlens[idx+1] - cu_seqlens[idx]
-                for idx in range(cu_seqlens.size(0) - 1)
-            ]).item()
+            max_seqlen = max(
+                [
+                    cu_seqlens[idx + 1] - cu_seqlens[idx]
+                    for idx in range(cu_seqlens.size(0) - 1)
+                ]
+            ).item()
 
         # Contains at least one padding token in the sequence
         causal = self.is_causal and query_length != 1
@@ -72,5 +80,7 @@ class InternLM2FlashAttention2ForPackedTraining(InternLM2FlashAttention2):
 
 
 def replace_internlm2_attention_class():
-    INTERNLM2_ATTENTION_CLASSES['flash_attention_2'] = InternLM2FlashAttention2ForPackedTraining
-    print('Replace INTERNLM2_ATTENTION_CLASSES to support packed training!!')
+    INTERNLM2_ATTENTION_CLASSES["flash_attention_2"] = (
+        InternLM2FlashAttention2ForPackedTraining
+    )
+    print("Replace INTERNLM2_ATTENTION_CLASSES to support packed training!!")

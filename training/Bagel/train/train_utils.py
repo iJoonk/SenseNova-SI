@@ -12,12 +12,12 @@ def create_logger(logging_dir, rank, filename="log"):
     if rank == 0 and logging_dir is not None:  # real logger
         logging.basicConfig(
             level=logging.INFO,
-            format='[\033[34m%(asctime)s\033[0m] %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S',
+            format="[\033[34m%(asctime)s\033[0m] %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
             handlers=[
-                logging.StreamHandler(), 
-                logging.FileHandler(f"{logging_dir}/{filename}.txt")
-            ]
+                logging.StreamHandler(),
+                logging.FileHandler(f"{logging_dir}/{filename}.txt"),
+            ],
         )
         logger = logging.getLogger(__name__)
     else:  # dummy logger (does nothing)
@@ -27,7 +27,11 @@ def create_logger(logging_dir, rank, filename="log"):
 
 
 def get_latest_ckpt(checkpoint_dir):
-    step_dirs = [d for d in os.listdir(checkpoint_dir) if os.path.isdir(os.path.join(checkpoint_dir, d))]
+    step_dirs = [
+        d
+        for d in os.listdir(checkpoint_dir)
+        if os.path.isdir(os.path.join(checkpoint_dir, d))
+    ]
     if len(step_dirs) == 0:
         return None
     step_dirs = sorted(step_dirs, key=lambda x: int(x))

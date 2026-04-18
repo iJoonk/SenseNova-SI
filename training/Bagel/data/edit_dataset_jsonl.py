@@ -16,25 +16,26 @@ from .parquet_utils import get_parquet_data_paths, init_arrow_pf_fs
 Image.MAX_IMAGE_PIXELS = 200000000
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 MaximumDecompressedSize = 1024
-MegaByte = 2 ** 20
+MegaByte = 2**20
 PngImagePlugin.MAX_TEXT_CHUNK = MaximumDecompressedSize * MegaByte
 
 
 class EditJSONLIterableDataset(DistributedIterableDataset):
     def _add_text(self, sample, text, need_loss, enable_cfg=True):
         text_ids = self.tokenizer.encode(text)
-        sample['num_tokens'] += len(text_ids)
-        sample['text_ids_list'].append(text_ids)
-        sample['sequence_plan'].append(
+        sample["num_tokens"] += len(text_ids)
+        sample["text_ids_list"].append(text_ids)
+        sample["sequence_plan"].append(
             {
-                'type': 'text',
-                'enable_cfg': int(enable_cfg),
-                'loss': int(need_loss),
-                'special_token_loss': 0,
-                'special_token_label': None,
+                "type": "text",
+                "enable_cfg": int(enable_cfg),
+                "loss": int(need_loss),
+                "special_token_loss": 0,
+                "special_token_label": None,
             }
         )
         return sample
+
     def _resize_and_pad(self, img: Image.Image, is_mask=False) -> Image.Image:
         """根据 __init__ 里解析好的 fixed_size 进行 resize/pad"""
         if self.fixed_size == None:
@@ -47,61 +48,74 @@ class EditJSONLIterableDataset(DistributedIterableDataset):
         target_h, target_w = self.fixed_size, self.fixed_size
         return img.resize((target_w, target_h), interp)
 
-
     def _add_image(self, sample, image, need_loss, need_vae, need_vit, enable_cfg=True):
         assert need_loss or need_vae or need_vit
 
         if need_loss:
-            sample['sequence_plan'].append(
+            sample["sequence_plan"].append(
                 {
-                    'type': 'vae_image', 
-                    'enable_cfg': 0, 
-                    'loss': 1, 
-                    'special_token_loss': 0,
-                    'special_token_label': None,
+                    "type": "vae_image",
+                    "enable_cfg": 0,
+                    "loss": 1,
+                    "special_token_loss": 0,
+                    "special_token_label": None,
                 }
             )
 
             image_tensor = self.transform(image)
             height, width = image_tensor.shape[1:]
-            sample['num_tokens'] += width * height // self.transform.stride ** 2
-            sample['image_tensor_list'].append(image_tensor)
+            sample["num_tokens"] += width * height // self.transform.stride**2
+            sample["image_tensor_list"].append(image_tensor)
 
         if need_vae:
-            sample['sequence_plan'].append(
+            sample["sequence_plan"].append(
                 {
-                    'type': 'vae_image', 
-                    'enable_cfg': int(enable_cfg), 
-                    'loss': 0, 
-                    'special_token_loss': 0,
-                    'special_token_label': None,
+                    "type": "vae_image",
+                    "enable_cfg": int(enable_cfg),
+                    "loss": 0,
+                    "special_token_loss": 0,
+                    "special_token_label": None,
                 }
             )
 
             image_tensor = self.transform(image)
             height, width = image_tensor.shape[1:]
-            sample['num_tokens'] += width * height // self.transform.stride ** 2
-            sample['image_tensor_list'].append(image_tensor.clone())
+            sample["num_tokens"] += width * height // self.transform.stride**2
+            sample["image_tensor_list"].append(image_tensor.clone())
 
         if need_vit:
-            sample['sequence_plan'].append(
+            sample["sequence_plan"].append(
                 {
-                    'type': 'vit_image',
-                    'enable_cfg': int(enable_cfg), 
-                    'loss': 0,
-                    'special_token_loss': 0,
-                    'special_token_label': None,
+                    "type": "vit_image",
+                    "enable_cfg": int(enable_cfg),
+                    "loss": 0,
+                    "special_token_loss": 0,
+                    "special_token_label": None,
                 },
             )
             vit_image_tensor = self.vit_transform(image)
             height, width = vit_image_tensor.shape[1:]
-            sample['num_tokens'] += width * height // self.vit_transform.stride ** 2
-            sample['image_tensor_list'].append(vit_image_tensor)
+            sample["num_tokens"] += width * height // self.vit_transform.stride**2
+            sample["image_tensor_list"].append(vit_image_tensor)
 
         return sample
+
     def __init__(
-        self, dataset_name, transform, tokenizer, vit_transform, jsonl_path_list, data_dir_list, num_used_data,
-        local_rank=0, world_size=1, num_workers=8, data_status=None, shuffle_lines=False, shuffle_seed=0, fixed_size=None
+        self,
+        dataset_name,
+        transform,
+        tokenizer,
+        vit_transform,
+        jsonl_path_list,
+        data_dir_list,
+        num_used_data,
+        local_rank=0,
+        world_size=1,
+        num_workers=8,
+        data_status=None,
+        shuffle_lines=False,
+        shuffle_seed=0,
+        fixed_size=None,
     ):
         """
         jsonl_path_list: list of jsonl file paths
@@ -139,7 +153,7 @@ class EditJSONLIterableDataset(DistributedIterableDataset):
         for jsonl_path, image_dir, num_data_point in zip(
             jsonl_path_list, data_dir_list, num_used_data
         ):
-            with open(jsonl_path, 'r') as f:
+            with open(jsonl_path, "r") as f:
                 raw_data = f.readlines()
             if shuffle_lines:
                 self.rng.seed(shuffle_seed)
@@ -163,38 +177,50 @@ class EditJSONLIterableDataset(DistributedIterableDataset):
 
         while True:
             data_paths_per_worker_ = data_paths_per_worker[row_start_id:]
-            for row_idx, (data, image_dir) in enumerate(data_paths_per_worker_, start=row_start_id):
+            for row_idx, (data, image_dir) in enumerate(
+                data_paths_per_worker_, start=row_start_id
+            ):
                 sample = {
-                    'sequence_plan': [],
-                    'text_ids_list': [],
-                    'image_tensor_list': [],
-                    'num_tokens': 0,
+                    "sequence_plan": [],
+                    "text_ids_list": [],
+                    "image_tensor_list": [],
+                    "num_tokens": 0,
                 }
                 # try:
                 data_item = json.loads(data)
                 sample = self._add_image(
                     sample,
                     # pil_img2rgb(Image.open(os.path.join(image_dir, data_item['image'][0]))),
-                    pil_img2rgb(self._resize_and_pad(load_image(os.path.join(image_dir, data_item['image'][0])))),
+                    pil_img2rgb(
+                        self._resize_and_pad(
+                            load_image(os.path.join(image_dir, data_item["image"][0]))
+                        )
+                    ),
                     need_loss=False,
                     need_vae=True,
                     need_vit=True,
                 )
-                if 'instruction' in data_item:
-                    instruction = data_item['instruction']
-                elif 'conversations' in data_item:
-                    conversations = data_item['conversations']
+                if "instruction" in data_item:
+                    instruction = data_item["instruction"]
+                elif "conversations" in data_item:
+                    conversations = data_item["conversations"]
                     if len(conversations) == 2:
-                        if conversations[0]['from'] == 'human':
-                            instruction = conversations[0]['value'].replace('<image>','')
+                        if conversations[0]["from"] == "human":
+                            instruction = conversations[0]["value"].replace(
+                                "<image>", ""
+                            )
                     # instruction = data_item['conversation']
                 else:
-                    print('no caption in ' + data_item)
+                    print("no caption in " + data_item)
                 sample = self._add_text(sample, instruction.rstrip(), need_loss=False)
                 sample = self._add_image(
                     sample,
                     # pil_img2rgb(Image.open(os.path.join(image_dir, data_item['image'][1]))),
-                    pil_img2rgb(self._resize_and_pad(load_image(os.path.join(image_dir, data_item['image'][1])))),
+                    pil_img2rgb(
+                        self._resize_and_pad(
+                            load_image(os.path.join(image_dir, data_item["image"][1]))
+                        )
+                    ),
                     need_loss=True,
                     need_vae=False,
                     need_vit=False,
@@ -203,7 +229,7 @@ class EditJSONLIterableDataset(DistributedIterableDataset):
 
                 #     print(f"Error in row {row_idx}")
                 #     continue
-                sample['data_indexes'] = {
+                sample["data_indexes"] = {
                     "data_indexes": row_idx,
                     "worker_id": worker_id,
                     "dataset_name": self.dataset_name,
@@ -212,4 +238,6 @@ class EditJSONLIterableDataset(DistributedIterableDataset):
                 # print('image[1]: ',sample['image_tensor_list'][1].shape)
                 yield sample
             row_start_id = 0
-            print(f"{self.dataset_name} repeat in rank-{self.local_rank} worker-{worker_id}")
+            print(
+                f"{self.dataset_name} repeat in rank-{self.local_rank} worker-{worker_id}"
+            )

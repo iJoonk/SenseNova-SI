@@ -37,9 +37,9 @@ from torch.distributed.fsdp.wrap import transformer_auto_wrap_policy
 class FSDPConfig:
     def __init__(
         self,
-        sharding_strategy, 
-        backward_prefetch, 
-        cpu_offload, 
+        sharding_strategy,
+        backward_prefetch,
+        cpu_offload,
         num_replicate,
         num_shard=8,
     ):
@@ -51,11 +51,11 @@ class FSDPConfig:
 
 
 def fsdp_wrapper(original_model, fsdp_config, ignored_modules=[]):
-    if fsdp_config.sharding_strategy == 'HYBRID_SHARD':
+    if fsdp_config.sharding_strategy == "HYBRID_SHARD":
         device_mesh = init_device_mesh(
-            "cuda", 
+            "cuda",
             mesh_shape=(fsdp_config.num_replicate, fsdp_config.num_shard),
-            mesh_dim_names=("replicate", "shard")
+            mesh_dim_names=("replicate", "shard"),
         )
     else:
         device_mesh = None
@@ -88,18 +88,17 @@ def fsdp_wrapper(original_model, fsdp_config, ignored_modules=[]):
     )
 
 
-
 class FSDPCheckpoint:
     @staticmethod
     def fsdp_save_ckpt(
-        ckpt_dir, 
-        train_steps, 
-        model, 
-        ema_model, 
-        optimizer, 
-        scheduler, 
+        ckpt_dir,
+        train_steps,
+        model,
+        ema_model,
+        optimizer,
+        scheduler,
         data_status,
-        logger, 
+        logger,
         fsdp_config,
     ):
         save_path = os.path.join(ckpt_dir, f"{train_steps:07d}")
@@ -115,7 +114,9 @@ class FSDPCheckpoint:
             ):
                 ema_state_dict = ema_model.state_dict()
                 if dist.get_rank() == 0:
-                    save_file(ema_state_dict, os.path.join(save_path, "ema.safetensors"))
+                    save_file(
+                        ema_state_dict, os.path.join(save_path, "ema.safetensors")
+                    )
 
         with FSDP.state_dict_type(
             model,
@@ -124,7 +125,9 @@ class FSDPCheckpoint:
         ):
             model_state_dict = model.state_dict()
             if dist.get_rank() == 0:
-                save_file(model_state_dict, os.path.join(save_path, "model.safetensors"))
+                save_file(
+                    model_state_dict, os.path.join(save_path, "model.safetensors")
+                )
 
         with FSDP.state_dict_type(model, StateDictType.LOCAL_STATE_DICT):
             if fsdp_config.sharding_strategy == "FULL_SHARD":
@@ -157,7 +160,9 @@ class FSDPCheckpoint:
         return
 
     @staticmethod
-    def try_load_ckpt(resume_from, logger, model, ema_model=None, resume_from_ema=False):
+    def try_load_ckpt(
+        resume_from, logger, model, ema_model=None, resume_from_ema=False
+    ):
         if resume_from is not None and os.path.exists(resume_from):
             logger.info(f"Loading checkpoint from {resume_from}.")
             if resume_from_ema:
@@ -167,8 +172,8 @@ class FSDPCheckpoint:
             model_state_dict = load_file(model_state_dict_path, device="cpu")
             # NOTE position embeds are fixed sinusoidal embeddings, so we can just pop it off,
             # which makes it easier to adapt to different resolutions.
-            model_state_dict.pop('vit_pos_embed.pos_embed', None)
-            model_state_dict.pop('latent_pos_embed.pos_embed', None)
+            model_state_dict.pop("vit_pos_embed.pos_embed", None)
+            model_state_dict.pop("latent_pos_embed.pos_embed", None)
             msg = model.load_state_dict(model_state_dict, strict=False)
             logger.info(msg)
             del model_state_dict
@@ -181,8 +186,8 @@ class FSDPCheckpoint:
                 ema_state_dict = load_file(ema_state_dict_path, device="cpu")
                 # NOTE position embeds are fixed sinusoidal embeddings, so we can just pop it off,
                 # which makes it easier to adapt to different resolutions.
-                ema_state_dict.pop('latent_pos_embed.pos_embed', None)
-                ema_state_dict.pop('vit_pos_embed.pos_embed', None)
+                ema_state_dict.pop("latent_pos_embed.pos_embed", None)
+                ema_state_dict.pop("vit_pos_embed.pos_embed", None)
                 msg = ema_model.load_state_dict(ema_state_dict, strict=False)
                 logger.info(msg)
                 del ema_state_dict
@@ -205,12 +210,16 @@ class FSDPCheckpoint:
             optimizer_state_dict_path = os.path.join(
                 resume_from, f"optimizer.{shard_index:05d}-of-{total_shards:05d}.pt"
             )
-            optimizer_state_dict = torch.load(optimizer_state_dict_path, map_location="cpu", weights_only=True)
+            optimizer_state_dict = torch.load(
+                optimizer_state_dict_path, map_location="cpu", weights_only=True
+            )
             optimizer.load_state_dict(optimizer_state_dict)
             del optimizer_state_dict
 
             scheduler_state_dict_path = os.path.join(resume_from, "scheduler.pt")
-            scheduler_state_dict = torch.load(scheduler_state_dict_path, weights_only=True, map_location="cpu")
+            scheduler_state_dict = torch.load(
+                scheduler_state_dict_path, weights_only=True, map_location="cpu"
+            )
             scheduler.load_state_dict(scheduler_state_dict)
             del scheduler_state_dict
 
@@ -226,7 +235,9 @@ class FSDPCheckpoint:
             """
             data_status_path = os.path.join(resume_from, "data_status.pt")
             if os.path.exists(data_status_path):
-                data_status = torch.load(data_status_path, weights_only=True, map_location="cpu")
+                data_status = torch.load(
+                    data_status_path, weights_only=True, map_location="cpu"
+                )
                 local_rank = dist.get_rank()
                 if local_rank < len(data_status):
                     data_status = data_status[local_rank]
@@ -242,10 +253,10 @@ class FSDPCheckpoint:
 
 def grad_checkpoint_check_fn(module):
     module_options = (
-        Qwen2DecoderLayer, 
-        SiglipEncoderLayer, 
-        MLPconnector, 
-        Qwen2MoEDecoderLayer, 
+        Qwen2DecoderLayer,
+        SiglipEncoderLayer,
+        MLPconnector,
+        Qwen2MoEDecoderLayer,
         Qwen2MoTDecoderLayer,
     )
     return isinstance(module, module_options)
@@ -270,7 +281,9 @@ def fsdp_ema_update(ema_model, model, decay=0.9999):
     for ema_handle, new_handle in zip(ema_handles, new_handles):
         if ema_handle.flat_param is not None and new_handle.flat_param.requires_grad:
             ema_params.append(ema_handle.flat_param.data)
-            new_params.append(new_handle.flat_param.data.to(dtype=ema_handle.flat_param.dtype))
+            new_params.append(
+                new_handle.flat_param.data.to(dtype=ema_handle.flat_param.dtype)
+            )
 
     torch._foreach_mul_(ema_params, decay)
     torch._foreach_add_(ema_params, new_params, alpha=1 - decay)

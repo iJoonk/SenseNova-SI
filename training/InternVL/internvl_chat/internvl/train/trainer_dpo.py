@@ -26,7 +26,7 @@ class MultimodalDPOTrainer(DPOTrainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if self.loss_type != 'bco_pair' and 'bco_pair' in self.loss_type:
+        if self.loss_type != "bco_pair" and "bco_pair" in self.loss_type:
             self.running = RunningMoments(self.accelerator)
 
     @staticmethod
@@ -53,29 +53,35 @@ class MultimodalDPOTrainer(DPOTrainer):
         concatenated_batch = {}
 
         if is_encoder_decoder:
-            max_length = max(batch['chosen_labels'].shape[1], batch['rejected_labels'].shape[1])
+            max_length = max(
+                batch["chosen_labels"].shape[1], batch["rejected_labels"].shape[1]
+            )
         else:
-            max_length = max(batch['chosen_input_ids'].shape[1], batch['rejected_input_ids'].shape[1])
+            max_length = max(
+                batch["chosen_input_ids"].shape[1], batch["rejected_input_ids"].shape[1]
+            )
 
         for k in batch:
-            if k.startswith('chosen') and isinstance(batch[k], torch.Tensor):
-                if 'labels' in k or is_encoder_decoder:
+            if k.startswith("chosen") and isinstance(batch[k], torch.Tensor):
+                if "labels" in k or is_encoder_decoder:
                     pad_value = label_pad_token_id
-                elif k.endswith('_input_ids'):
+                elif k.endswith("_input_ids"):
                     pad_value = padding_value
-                elif k.endswith('_attention_mask'):
+                elif k.endswith("_attention_mask"):
                     pad_value = 0
-                concatenated_key = k.replace('chosen', 'concatenated')
-                concatenated_batch[concatenated_key] = pad_to_length(batch[k], max_length, pad_value=pad_value)
+                concatenated_key = k.replace("chosen", "concatenated")
+                concatenated_batch[concatenated_key] = pad_to_length(
+                    batch[k], max_length, pad_value=pad_value
+                )
         for k in batch:
-            if k.startswith('rejected') and isinstance(batch[k], torch.Tensor):
-                if 'labels' in k or is_encoder_decoder:
+            if k.startswith("rejected") and isinstance(batch[k], torch.Tensor):
+                if "labels" in k or is_encoder_decoder:
                     pad_value = label_pad_token_id
-                elif k.endswith('_input_ids'):
+                elif k.endswith("_input_ids"):
                     pad_value = padding_value
-                elif k.endswith('_attention_mask'):
+                elif k.endswith("_attention_mask"):
                     pad_value = 0
-                concatenated_key = k.replace('rejected', 'concatenated')
+                concatenated_key = k.replace("rejected", "concatenated")
                 concatenated_batch[concatenated_key] = torch.cat(
                     (
                         concatenated_batch[concatenated_key],
@@ -85,20 +91,30 @@ class MultimodalDPOTrainer(DPOTrainer):
                 ).to(device=device)
 
         if is_encoder_decoder:
-            concatenated_batch['concatenated_input_ids'] = batch['prompt_input_ids'].repeat(2, 1).to(device=device)
-            concatenated_batch['concatenated_attention_mask'] = (
-                batch['prompt_attention_mask'].repeat(2, 1).to(device=device)
+            concatenated_batch["concatenated_input_ids"] = (
+                batch["prompt_input_ids"].repeat(2, 1).to(device=device)
+            )
+            concatenated_batch["concatenated_attention_mask"] = (
+                batch["prompt_attention_mask"].repeat(2, 1).to(device=device)
             )
 
-        if 'pixel_values' in batch:
-            concatenated_batch['pixel_values'] = batch['pixel_values'].repeat(2, 1, 1, 1)
-            concatenated_batch['image_flags'] = batch['image_flags'].repeat(2)
+        if "pixel_values" in batch:
+            concatenated_batch["pixel_values"] = batch["pixel_values"].repeat(
+                2, 1, 1, 1
+            )
+            concatenated_batch["image_flags"] = batch["image_flags"].repeat(2)
 
         return concatenated_batch
 
     def concatenated_forward(
         self, model: nn.Module, batch: Dict[str, Union[List, torch.LongTensor]]
-    ) -> Tuple[torch.FloatTensor, torch.FloatTensor, torch.FloatTensor, torch.FloatTensor, torch.FloatTensor]:
+    ) -> Tuple[
+        torch.FloatTensor,
+        torch.FloatTensor,
+        torch.FloatTensor,
+        torch.FloatTensor,
+        torch.FloatTensor,
+    ]:
         """Run the given model on the given batch of inputs, concatenating the chosen and rejected inputs together.
 
         We do this to avoid doing two forward passes, because it's faster for FSDP.
@@ -111,26 +127,30 @@ class MultimodalDPOTrainer(DPOTrainer):
             padding_value=self.padding_value,
             device=self.accelerator.device,
         )
-        len_chosen = batch['chosen_labels'].shape[0]
+        len_chosen = batch["chosen_labels"].shape[0]
 
         model_kwargs = {}
 
         if self.is_encoder_decoder:
-            model_kwargs['labels'] = concatenated_batch['concatenated_labels']
-            model_kwargs['decoder_input_ids'] = concatenated_batch.pop('concatenated_decoder_input_ids', None)
+            model_kwargs["labels"] = concatenated_batch["concatenated_labels"]
+            model_kwargs["decoder_input_ids"] = concatenated_batch.pop(
+                "concatenated_decoder_input_ids", None
+            )
 
         if self.is_vision_model:
-            model_kwargs['pixel_values'] = concatenated_batch['pixel_values']
-            model_kwargs['pixel_attention_mask'] = concatenated_batch['pixel_attention_mask']
+            model_kwargs["pixel_values"] = concatenated_batch["pixel_values"]
+            model_kwargs["pixel_attention_mask"] = concatenated_batch[
+                "pixel_attention_mask"
+            ]
 
         if self.aux_loss_enabled:
-            model_kwargs['output_router_logits'] = True
+            model_kwargs["output_router_logits"] = True
 
         outputs = model(
-            input_ids=concatenated_batch['concatenated_input_ids'],
-            attention_mask=concatenated_batch['concatenated_attention_mask'],
-            pixel_values=concatenated_batch['pixel_values'],
-            image_flags=concatenated_batch['image_flags'],
+            input_ids=concatenated_batch["concatenated_input_ids"],
+            attention_mask=concatenated_batch["concatenated_attention_mask"],
+            pixel_values=concatenated_batch["pixel_values"],
+            image_flags=concatenated_batch["image_flags"],
             use_cache=False,
             **model_kwargs,
         )
@@ -138,7 +158,7 @@ class MultimodalDPOTrainer(DPOTrainer):
 
         all_logps, size_completion = self.get_batch_logps(
             all_logits,
-            concatenated_batch['concatenated_labels'],
+            concatenated_batch["concatenated_labels"],
             # average_log_prob=self.loss_type == "ipo",
             is_encoder_decoder=self.is_encoder_decoder,
             label_pad_token_id=self.label_pad_token_id,
@@ -158,10 +178,10 @@ class MultimodalDPOTrainer(DPOTrainer):
             loss = loss_fct(logits, labels)
             return loss
 
-        labels = concatenated_batch['concatenated_labels'].clone()
+        labels = concatenated_batch["concatenated_labels"].clone()
         nll_loss = cross_entropy_loss(all_logits[:len_chosen], labels[:len_chosen])
 
-        if self.loss_type == 'ipo':
+        if self.loss_type == "ipo":
             all_logps = all_logps / size_completion
 
         chosen_logps = all_logps[:len_chosen]
@@ -171,7 +191,14 @@ class MultimodalDPOTrainer(DPOTrainer):
         rejected_logits = all_logits[len_chosen:]
 
         if self.aux_loss_enabled:
-            return (chosen_logps, rejected_logps, chosen_logits, rejected_logits, nll_loss, outputs.aux_loss)
+            return (
+                chosen_logps,
+                rejected_logps,
+                chosen_logits,
+                rejected_logits,
+                nll_loss,
+                outputs.aux_loss,
+            )
 
         return (chosen_logps, rejected_logps, chosen_logits, rejected_logits, nll_loss)
 
@@ -182,8 +209,8 @@ class MultimodalDPOTrainer(DPOTrainer):
 
         # If ZeRO-3 is used, we shard both the active and reference model.
         # Otherwise, we assume the reference model fits in memory and is initialized on each device with ZeRO disabled (stage 0)
-        if config_kwargs['zero_optimization']['stage'] != 3:
-            config_kwargs['zero_optimization']['stage'] = 0
+        if config_kwargs["zero_optimization"]["stage"] != 3:
+            config_kwargs["zero_optimization"]["stage"] = 0
         model, *_ = deepspeed.initialize(model=model, config=config_kwargs)
         model.eval()
         return model
@@ -191,11 +218,11 @@ class MultimodalDPOTrainer(DPOTrainer):
     def _prepare_deepspeed(self, model):
         deepspeed_plugin = self.accelerator.state.deepspeed_plugin
         config_kwargs = deepspeed_plugin.deepspeed_config
-        if config_kwargs['zero_optimization']['stage'] == 3:
-            print('Enable DPOTrainer._prepare_deepspeed')
+        if config_kwargs["zero_optimization"]["stage"] == 3:
+            print("Enable DPOTrainer._prepare_deepspeed")
             return self._prepare_deepspeed_orig(model)
 
-        print('Disable DPOTrainer._prepare_deepspeed')
+        print("Disable DPOTrainer._prepare_deepspeed")
         for param in model.parameters():
             param.requires_grad = False
 
@@ -207,7 +234,7 @@ class MultimodalDPOTrainer(DPOTrainer):
         self,
         model,
         batch: Dict[str, Union[List, torch.LongTensor]],
-        train_eval: Literal['train', 'eval'] = 'train',
+        train_eval: Literal["train", "eval"] = "train",
     ):
         """Compute the DPO loss and other metrics for the given batch of inputs for train or test."""
         metrics = {}
@@ -225,12 +252,12 @@ class MultimodalDPOTrainer(DPOTrainer):
 
         # if reference_chosen_logps and reference_rejected_logps in batch use them, otherwise use the reference model
         if (
-            'reference_chosen_logps' in batch
-            and 'reference_rejected_logps' in batch
+            "reference_chosen_logps" in batch
+            and "reference_rejected_logps" in batch
             and self.args.rpo_alpha is not None
         ):
-            reference_chosen_logps = batch['reference_chosen_logps']
-            reference_rejected_logps = batch['reference_rejected_logps']
+            reference_chosen_logps = batch["reference_chosen_logps"]
+            reference_rejected_logps = batch["reference_rejected_logps"]
         else:
             with torch.no_grad():
                 if self.ref_model is None:
@@ -251,9 +278,9 @@ class MultimodalDPOTrainer(DPOTrainer):
                         _,
                     ) = self.concatenated_forward(self.ref_model, batch)
 
-        if ',' in self.loss_type:
+        if "," in self.loss_type:
             loss_type = self.loss_type
-            loss_type_list = loss_type.split(',')
+            loss_type_list = loss_type.split(",")
 
             losses, chosen_rewards, rejected_rewards = 0, 0, 0
             for curr_type in loss_type_list:
@@ -264,10 +291,12 @@ class MultimodalDPOTrainer(DPOTrainer):
                     reference_chosen_logps,
                     reference_rejected_logps,
                 )
-                curr_weight = getattr(self.args, f'{curr_type}_loss_weight')
+                curr_weight = getattr(self.args, f"{curr_type}_loss_weight")
                 losses = losses + curr_losses * curr_weight
                 chosen_rewards = chosen_rewards + curr_chosen_rewards * curr_weight
-                rejected_rewards = rejected_rewards + curr_rejected_rewards * curr_weight
+                rejected_rewards = (
+                    rejected_rewards + curr_rejected_rewards * curr_weight
+                )
 
             self.loss_type = loss_type
         else:
@@ -284,19 +313,25 @@ class MultimodalDPOTrainer(DPOTrainer):
             # losses = losses * self.args.rpo_alpha + policy_nll_loss
             losses = losses + policy_nll_loss * self.args.rpo_alpha
 
-        prefix = 'eval_' if train_eval == 'eval' else ''
-        metrics[f'{prefix}rewards/chosen'] = chosen_rewards.mean().cpu()
-        metrics[f'{prefix}rewards/rejected'] = rejected_rewards.mean().cpu()
-        metrics[f'{prefix}rewards/accuracies'] = reward_accuracies.mean().cpu()
-        metrics[f'{prefix}rewards/margins'] = (chosen_rewards - rejected_rewards).mean().cpu()
-        metrics[f'{prefix}logps/rejected'] = policy_rejected_logps.detach().mean().cpu()
-        metrics[f'{prefix}logps/chosen'] = policy_chosen_logps.detach().mean().cpu()
-        metrics[f'{prefix}logits/rejected'] = policy_rejected_logits.detach().mean().cpu()
-        metrics[f'{prefix}logits/chosen'] = policy_chosen_logits.detach().mean().cpu()
+        prefix = "eval_" if train_eval == "eval" else ""
+        metrics[f"{prefix}rewards/chosen"] = chosen_rewards.mean().cpu()
+        metrics[f"{prefix}rewards/rejected"] = rejected_rewards.mean().cpu()
+        metrics[f"{prefix}rewards/accuracies"] = reward_accuracies.mean().cpu()
+        metrics[f"{prefix}rewards/margins"] = (
+            (chosen_rewards - rejected_rewards).mean().cpu()
+        )
+        metrics[f"{prefix}logps/rejected"] = policy_rejected_logps.detach().mean().cpu()
+        metrics[f"{prefix}logps/chosen"] = policy_chosen_logps.detach().mean().cpu()
+        metrics[f"{prefix}logits/rejected"] = (
+            policy_rejected_logits.detach().mean().cpu()
+        )
+        metrics[f"{prefix}logits/chosen"] = policy_chosen_logits.detach().mean().cpu()
         if self.args.rpo_alpha is not None:
-            metrics[f'{prefix}nll_loss'] = policy_nll_loss.detach().mean().cpu()
+            metrics[f"{prefix}nll_loss"] = policy_nll_loss.detach().mean().cpu()
 
         if self.aux_loss_enabled:
-            return losses.mean() + getattr(model.config, 'router_aux_loss_coef', 0.0) * aux_loss, metrics
+            return losses.mean() + getattr(
+                model.config, "router_aux_loss_coef", 0.0
+            ) * aux_loss, metrics
 
         return losses.mean(), metrics

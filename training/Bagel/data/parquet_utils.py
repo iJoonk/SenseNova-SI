@@ -25,12 +25,12 @@ def get_parquet_data_paths(data_dir_list, num_sampled_data_paths, rank=0, world_
         local_num_sampled_data_paths = num_sampled_data_paths
 
     local_data_paths = []
-    for data_dir, num_data_path in zip(local_data_dir_list, local_num_sampled_data_paths):
+    for data_dir, num_data_path in zip(
+        local_data_dir_list, local_num_sampled_data_paths
+    ):
         if data_dir.startswith("hdfs://"):
             files = hdfs_ls_cmd(data_dir)
-            data_paths_per_dir = [
-                file for file in files if file.endswith(".parquet")
-            ]
+            data_paths_per_dir = [file for file in files if file.endswith(".parquet")]
         else:
             files = os.listdir(data_dir)
             data_paths_per_dir = [
@@ -85,5 +85,11 @@ def init_arrow_pf_fs(parquet_file_path):
 
 
 def hdfs_ls_cmd(dir):
-    result = subprocess.run(["hdfs", "dfs", "ls", dir], capture_output=True, text=True).stdout
-    return ['hdfs://' + i.split('hdfs://')[-1].strip() for i in result.split('\n') if 'hdfs://' in i]
+    result = subprocess.run(
+        ["hdfs", "dfs", "ls", dir], capture_output=True, text=True
+    ).stdout
+    return [
+        "hdfs://" + i.split("hdfs://")[-1].strip()
+        for i in result.split("\n")
+        if "hdfs://" in i
+    ]
