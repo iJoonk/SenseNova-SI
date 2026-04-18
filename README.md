@@ -16,10 +16,13 @@ English | [简体中文](README_CN.md)
     <a href="https://huggingface.co/collections/sensenova/sensenova-si" target="_blank">
         <img alt="SenseNova-SI" src="https://img.shields.io/badge/%F0%9F%A4%97%20_SenseNova_SI-Models-ffc107?color=ffc107&logoColor=white" height="20" />
     </a>
+    <a href="https://huggingface.co/datasets/sensenova/SenseNova-SI-800K" target="_blank">
+        <img alt="SenseNova-SI-800K" src="https://img.shields.io/badge/%F0%9F%A4%97%20_SenseNova_SI_800K-Data-ffc107?color=ffc107&logoColor=white" height="20" />
+    </a>
     <a href="https://modelscope.cn/collections/SenseNova-SI-a1d78333be8d42" target="_blank">
         <img alt="SenseNova-SI" src="https://img.shields.io/badge/🤖 ModelScope-Models-blue" height="20" />
     </a>
-    <a href="https://huggingface.co/spaces/lmms-lab-si/EASI-Leaderboard" target="_blank">
+    <a href="https://easi.lmms-lab.com/leaderboard/" target="_blank">
         <img alt="Leaderboard" src="https://img.shields.io/badge/%F0%9F%A4%97%20_EASI-Leaderboard-ffc107?color=ffc107&logoColor=white" height="20" />
     </a>
     <a href="https://github.com/EvolvingLMMs-Lab/EASI" target="_blank">
@@ -44,6 +47,9 @@ All newly trained multimodal foundation models are publicly released to facilita
 *In the future, SenseNova-SI will be integrated with larger-scale in-house models.*
 
 ## News
+- [2026-04-13] We have released [**SenseNova-SI-1.3-Qwen3-VL-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.3-Qwen3-VL-8B), built on **Qwen3-VL** with **14M** SI training data, demonstrating strong spatial intelligence across benchmarks and improved **open-ended spatial question-answering** compared to earlier SenseNova-SI Qwen variants.
+- [2026-04-01] We have released [**SenseNova-SI-1.5-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.5-InternVL3-8B), which significantly improves **solid geometric** question-answering and analyzing capabilities, achieving an accuracy of **63.5** on SolidGeo MCQ.
+- [2026-03-27] We have released [**SenseNova-SI-1.4-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.4-InternVL3-8B), which significantly improves **grounding** and **depth estimation** capabilities, achieving **89.21** on RefCOCO avg and **78.64** on CountBench.
 - [2026-02-21] Our work got accepted to CVPR 2026! A paper is just a step. what truly matters is continuing to push the boundaries of spatial intelligence models and sharing our work with the community.
 - [2026-01-09] We have released [**SenseNova-SI-1.3-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.3-InternVL3-8B), which improves open-ended spatial question-answering capabilities.
 - [2025-12-06] As a first step, we have released a highly effective data subset, [**SenseNova-SI-800K**](https://huggingface.co/datasets/sensenova/SenseNova-SI-800K), as well as [**SenseNova-SI-1.1-InternVL3-8B-800K**](https://huggingface.co/sensenova/SenseNova-SI-1.1-InternVL3-8B-800K), a model trained exclusively on the **SenseNova-SI-800K** subset.
@@ -60,10 +66,33 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       <th>Model</th>
       <th>Base Architecture</th>
       <th>SI Dataset Scale</th>
+      <th>EASI-8</th>
       <th>Other Remarks</th>
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td>
+        <a href="https://huggingface.co/sensenova/SenseNova-SI-1.5-InternVL3-8B/">
+          SenseNova-SI-1.5-InternVL3-8B
+        </a>
+      </td>
+      <td>SenseNova-SI-1.4-InternVL3-8B</td>
+      <td>1.5M</td>
+      <td>64.4</td>
+      <td>Enhanced capability in solid geometry</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://huggingface.co/sensenova/SenseNova-SI-1.4-InternVL3-8B/">
+          SenseNova-SI-1.4-InternVL3-8B
+        </a>
+      </td>
+      <td>InternVL3</td>
+      <td>29M</td>
+      <td>63.7</td>
+      <td>Enhanced capability in grounding and depth estimation</td>
+    </tr>
     <tr>
       <td>
         <a href="https://huggingface.co/sensenova/SenseNova-SI-1.3-InternVL3-8B/">
@@ -72,7 +101,19 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       </td>
       <td>InternVL3</td>
       <td>14M</td>
-      <td>Best Model</td>
+      <td>65.2</td>
+      <td>Best in spatial intelligence, with enhanced capabilities for open-ended short QA</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://huggingface.co/sensenova/SenseNova-SI-1.3-Qwen3-VL-8B/">
+          SenseNova-SI-1.3-Qwen3-VL-8B
+        </a>
+      </td>
+      <td>Qwen3-VL</td>
+      <td>14M</td>
+      <td>61.4</td>
+      <td>Enhanced capability for open-ended short QA</td>
     </tr>
     <tr>
       <td>
@@ -82,6 +123,7 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       </td>
       <td>InternVL3</td>
       <td>10M</td>
+      <td>64.5</td>
       <td>-</td>
     </tr>
     <tr>
@@ -92,6 +134,7 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       </td>
       <td>InternVL3</td>
       <td>8M</td>
+      <td>61.5</td>
       <td>-</td>
     </tr>
     <tr>
@@ -102,6 +145,7 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       </td>
       <td>InternVL3</td>
       <td>8M</td>
+      <td>49.4</td>
       <td>-</td>
     </tr>
     <tr>
@@ -112,6 +156,7 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       </td>
       <td>Qwen3-VL</td>
       <td>8M</td>
+      <td>58.1</td>
       <td>-</td>
     </tr>
     <tr>
@@ -122,6 +167,7 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       </td>
       <td>Qwen2.5-VL</td>
       <td>8M</td>
+      <td>51.0</td>
       <td>-</td>
     </tr>
     <tr>
@@ -132,6 +178,7 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       </td>
       <td>Qwen2.5-VL</td>
       <td>8M</td>
+      <td>45.7</td>
       <td>-</td>
     </tr>
     <tr>
@@ -142,7 +189,8 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
       </td>
       <td>BAGEL</td>
       <td>8M</td>
-      <td>unified understanding and generation model</td>
+      <td>48.6</td>
+      <td>Unified understanding and generation model</td>
     </tr>
   </tbody>
 </table>
@@ -153,16 +201,18 @@ which achieve state-of-the-art(SOTA) performance among open-source models of com
 
 Currently, we build SenseNova-SI upon popular open-source foundation models to maximize compatibility with existing research pipelines.
 In this release, we present 
+[**SenseNova-SI-1.5-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.5-InternVL3-8B),
+[**SenseNova-SI-1.4-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.4-InternVL3-8B),
 [**SenseNova-SI-1.3-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.3-InternVL3-8B),
+[**SenseNova-SI-1.3-Qwen3-VL-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.3-Qwen3-VL-8B),
 [**SenseNova-SI-1.2-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.2-InternVL3-8B),
 [**SenseNova-SI-1.1-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-InternVL3-8B),
 [**SenseNova-SI-1.1-Qwen3-VL-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen3-VL-8B),
 [**SenseNova-SI-1.1-Qwen2.5-VL-7B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen2.5-VL-7B),
 [**SenseNova-SI-1.1-Qwen2.5-VL-3B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-Qwen2.5-VL-3B), and
-[**SenseNova-SI-1.1-InternVL3-2B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-InternVL3-2B),
-of which **SenseNova-SI-1.3-InternVL3-8B** achieves state-of-the-art performance among open-source models of comparable size across eight recent spatial intelligence benchmarks, while simultaneously enhancing open-ended spatial question-answering:
-**VSI**, **MMSI**, **MindCube**, **ViewSpatial**, **SITE**, **BLINK**, **3DSRBench**, **EmbSpatial-Bench**.
-
+[**SenseNova-SI-1.1-InternVL3-2B**](https://huggingface.co/sensenova/SenseNova-SI-1.1-InternVL3-2B), of which **SenseNova-SI-1.3-InternVL3-8B** achieve state-of-the-art performance among open-source models of comparable size across eight recent spatial intelligence benchmarks: VSI, MMSI, MindCube, ViewSpatial, SITE, BLINK, 3DSRBench, EmbSpatial-Bench. It also improves open-ended spatial question-answering capabilities compared to previous versions.
+**SenseNova-SI-1.4-InternVL3-8B** demonstrates strong spatial intelligence across a wide range of benchmarks, with improved **grounding** performance, achieving an average score of **89.21** across all RefCOCO splits and **78.64** on CountBench. On our depth estimation task constructed from the Ibims dataset, it reaches **95.56** in relative depth and **80.31** in absolute depth.
+**SenseNova-SI-1.5-InternVL3-8B** exhibits strong spatial intelligence as well as notable improvements in analyzing and solving **solid geometric** problems, achieving an accuracy of **63.5** on SolidGeo MCQ. On our internal benchmarks constructed from K12 question banks, SolidMath and Math3D, it reaches an accuracy of **72.7** and **68.9** respectively.
 
 <table>
   <thead>
@@ -238,6 +288,39 @@ of which **SenseNova-SI-1.3-InternVL3-8B** achieves state-of-the-art performance
       <td><strong>62.4</strong></td>
       <td><strong>81.0</strong></td>
     </tr>
+    <tr>
+      <td><strong>SenseNova-SI-1.3-Qwen3-VL-8B</strong></td>
+      <td><strong>67.8</strong></td>
+      <td><strong>39.5</strong></td>
+      <td><strong>68.3</strong></td>
+      <td><strong>55.8</strong></td>
+      <td><strong>57.5</strong></td>
+      <td><strong>63.0</strong></td>
+      <td><strong>57.3</strong></td>
+      <td><strong>82.1</strong></td>
+    </tr>
+    <tr>
+      <td><strong>SenseNova-SI-1.4-InternVL3-8B</strong></td>
+      <td><strong>66.6</strong></td>
+      <td><strong>40.1</strong></td>
+      <td><strong>88.8</strong></td>
+      <td><strong>55.7</strong></td>
+      <td><strong>47.9</strong></td>
+      <td><strong>68.1</strong></td>
+      <td><strong>60.4</strong></td>
+      <td><strong>81.7</strong></td>
+    </tr>
+    <tr>
+      <td><strong>SenseNova-SI-1.5-InternVL3-8B</strong></td>
+      <td><strong>67.3</strong></td>
+      <td><strong>38.3</strong></td>
+      <td><strong>92.1</strong></td>
+      <td><strong>59.0</strong></td>
+      <td><strong>47.5</strong></td>
+      <td><strong>69.5</strong></td>
+      <td><strong>61.3</strong></td>
+      <td><strong>80.3</strong></td>
+    </tr>
     <tr style="background:#F2F0EF;color:#6b7280;font-weight:600;text-align:center;">
       <td colspan="9"><em>Proprietary Models</em></td>
     </tr>
@@ -252,6 +335,68 @@ of which **SenseNova-SI-1.3-InternVL3-8B** achieves state-of-the-art performance
     </tr>
   </tbody>
 </table>
+
+For grounding and depth estimation benchmarks, we report the following results.
+RefCOCO and CountBench are reproduced using [lmms-eval](https://github.com/EvolvingLMMs-Lab/lmms-eval), while the depth estimation results are evaluated on our internally constructed test set.
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>RefCOCO avg</th>
+      <th>CountBench</th>
+      <th>Ibims Relative Depth</th>
+      <th>Ibims Absolute Depth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>InternVL3-8B</td><td>89.01</td><td>81.31</td><td>52.22</td><td>13.45</td>
+    </tr>
+    <tr>
+      <td>SenseNova-SI-1.3-InternVL3-8B</td><td>83.85</td><td>73.92</td><td>68.60</td><td>59.23</td>
+    </tr>
+    <tr>
+      <td><strong>SenseNova-SI-1.4-InternVL3-8B</strong></td>
+      <td><strong>89.21</strong></td>
+      <td><strong>78.64</strong></td>
+      <td><strong>95.56</strong></td>
+      <td><strong>80.31</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+For solid geometry benchmarks, we report the following results.
+SolidGeo MCQ contains multiple choice questions extracted from [SolidGeo](https://huggingface.co/datasets/SolidGeo/SolidGeo).
+SolidMath and Math3D are internally benchmarks constructed from K12 question banks, containing multiple-choice problems in Chinese on solid geometry. SolidMath is built from in-domain data and Math3D is derived from out-of-domain data.
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>SolidGeo MCQ</th>
+      <th>SpatialViz-Bench</th>
+      <th>SolidMath</th>
+      <th>Math3D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>InternVL3-8B</td><td>36.4</td><td>32.0</td><td>42.5</td><td>43.7</td>
+    </tr>
+    <tr>
+      <td>SenseNova-SI-1.3-InternVL3-8B</td><td>36.5</td><td>29.6</td><td>39.6</td><td>40.3</td>
+    </tr>
+    <tr>
+      <td><strong>SenseNova-SI-1.5-InternVL3-8B</strong></td>
+      <td><strong>63.5</strong></td>
+      <td><strong>33.0</strong></td>
+      <td><strong>72.7</strong></td>
+      <td><strong>68.9</strong></td>
+    </tr>
+  </tbody>
+</table>
+
 
 ### Datasets
 
@@ -347,7 +492,7 @@ A simple image-free test to verify environment setup and download the model.
 ```bash
 python example.py \
   --question "Hello" \
-  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B
+  --model_path sensenova/SenseNova-SI-1.4-InternVL3-8B
 ```
 
 #### Switching Between Supported Models
@@ -362,7 +507,7 @@ To use BAGEL-MoT:
 
 To use Qwen3-VL:
 ```bash
---model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
+--model_path sensenova/SenseNova-SI-1.3-Qwen3-VL-8B
 ```
 ### Examples
 
@@ -405,8 +550,8 @@ This example is from [SITE-Bench](https://github.com/wenqi-wang20/SITE-Bench):
 python example.py \
   --image_paths examples/Q1_1.png \
   --question "Question: Consider the real-world 3D locations of the objects. Which is closer to the sink, the toilet paper or the towel?\nOptions: \nA. toilet paper\nB. towel\nGive me the answer letter directly. The best answer is:" \
-  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B
-# --model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
+  --model_path sensenova/SenseNova-SI-1.5-InternVL3-8B
+# --model_path sensenova/SenseNova-SI-1.3-Qwen3-VL-8B
 ```
 
 
@@ -435,8 +580,8 @@ This example is from [MMSI-Bench](https://github.com/InternRobotics/MMSI-Bench):
 python example.py \
   --image_paths examples/Q2_1.png examples/Q2_2.png \
   --question "If the landscape painting is on the east side of the bedroom, where is the window located in the bedroom?\nOptions: A. North side, B. South side, C. West side, D. East side\nAnswer with the option's letter from the given choices directly. Enclose the option's letter within ``." \
-  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B 
-# --model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
+  --model_path sensenova/SenseNova-SI-1.5-InternVL3-8B
+# --model_path sensenova/SenseNova-SI-1.3-Qwen3-VL-8B
 ```
 
 <!-- Example 2 -->
@@ -489,6 +634,113 @@ python example.py \
 </details>
 
 
+#### Example 4
+
+This example demonstrates the model's **grounding** capability, from [RefCOCO](https://github.com/lichengunc/refer):
+
+```bash
+python example.py \
+  --image_paths examples/Q4.png \
+  --question "Please provide the bounding box coordinate of the region this sentence describes: <ref>blue shirt lady</ref>" \
+  --model_path sensenova/SenseNova-SI-1.4-InternVL3-8B
+```
+
+<!-- Example 4 -->
+<details open>
+  <summary><strong>Details of Example 4</strong></summary>
+  <p><strong>Q: </strong>Please provide the bounding box coordinate of the region this sentence describes: &lt;ref&gt;blue shirt lady&lt;/ref&gt;</p>
+  <table>
+    <tr>
+      <td align="center" width="50%" style="padding:4px;">
+        <img src="./examples/Q4.png" alt="First image" width="100%">
+      </td>
+    </tr>
+  </table>
+  <p><strong>GT: [0.096234, 0.161229, 0.436516, 1.000000]</strong></p>
+</details>
+
+
+#### Example 5
+
+This example demonstrates the model's **depth estimation** capability:
+
+```bash
+python example.py \
+  --image_paths examples/Q5.png \
+  --question "Identify the minimal distance between the point and the camera, in meters." \
+  --model_path sensenova/SenseNova-SI-1.4-InternVL3-8B
+```
+
+<!-- Example 5 -->
+<details open>
+  <summary><strong>Details of Example 5</strong></summary>
+  <p><strong>Q: </strong>Identify the minimal distance between the point and the camera, in meters.</p>
+  <table>
+    <tr>
+      <td align="center" width="50%" style="padding:4px;">
+        <img src="./examples/Q5.png" alt="First image" width="100%">
+      </td>
+    </tr>
+  </table>
+  <p><strong>GT: 4.4</strong></p>
+</details>
+
+
+
+#### Example 6
+
+This example demonstrates the model's capability in **solid geometry(Three views)**:
+
+```bash
+python example.py \
+  --image_paths examples/Q6.png \
+  --question "Enclose your thinking process in <think> </think> tags and your final answer in <answer> </answer>" \
+  --model_path sensenova/SenseNova-SI-1.5-InternVL3-8B
+```
+
+
+<!-- Example 6 -->
+<details open>
+  <summary><strong>Details of Example 6</strong></summary>
+  <p><strong>Q: </strong>Enclose your thinking process in &lt;think> &lt;/think> tags and your final answer in &lt;answer> &lt;/answer></p>
+  <table>
+    <tr>
+      <td align="center" width="50%" style="padding:4px;">
+        <img src="./examples/Q6.png" alt="First image" width="100%">
+      </td>
+    </tr>
+  </table>
+  <p><strong>GT: D</strong></p>
+</details>
+
+
+#### Example 7
+
+This example demonstrates the model's capability in **solid geometry(Nets of 3D Shapes)**:
+
+```bash
+python example.py \
+  --image_paths examples/Q7.png \
+  --question "请将你的思考过程放在<think></think>标签内，并将你的最终答案放在<answer></answer>标签内。" \
+  --model_path sensenova/SenseNova-SI-1.5-InternVL3-8B
+```
+
+
+<!-- Example 7 -->
+<details open>
+  <summary><strong>Details of Example 7</strong></summary>
+  <p><strong>Q: </strong>Enclose your thinking process in &lt;think> &lt;/think> tags and your final answer in &lt;answer> &lt;/answer></p>
+  <table>
+    <tr>
+      <td align="center" width="50%" style="padding:4px;">
+        <img src="./examples/Q7.png" alt="First image" width="100%">
+      </td>
+    </tr>
+  </table>
+  <p><strong>GT: D</strong></p>
+</details>
+
+
 #### Test Multiple Questions in a Single Run
 
 Prepare a file similar to [examples/examples.jsonl](examples/examples.jsonl), where each line represents a single question.
@@ -501,9 +753,12 @@ The model is loaded once and processes questions sequentially. The questions rem
 ```bash
 python example.py \
   --jsonl_path examples/examples.jsonl \
-  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B 
-# --model_path sensenova/SenseNova-SI-1.1-Qwen3-VL-8B
+  --model_path sensenova/SenseNova-SI-1.3-InternVL3-8B
 ```
+
+### Training
+
+To train SenseNova-SI-Qwen3-VL-8B, refer to [training/training_qwen3_vl.md](training/training_qwen3_vl.md).
 
 ### Evaluation
 
@@ -514,10 +769,10 @@ EASI supports over 20 spatial intelligence models and more than 20 spatial bench
 ## 🖊️ Citation
 
 ```bib
-@article{sensenova-si,
+@InProceedings{sensenova-si,
   title = {Scaling Spatial Intelligence with Multimodal Foundation Models},
   author = {Cai, Zhongang and Wang, Ruisi and Gu, Chenyang and Pu, Fanyi and Xu, Junxiang and Wang, Yubo and Yin, Wanqi and Yang, Zhitao and Wei, Chen and Sun, Qingping and Zhou, Tongxi and Li, Jiaqi and Pang, Hui En and Qian, Oscar and Wei, Yukun and Lin, Zhiqian and Shi, Xuanke and Deng, Kewang and Han, Xiaoyang and Chen, Zukai and Fan, Xiangyu and Deng, Hanming and Lu, Lewei and Pan, Liang and Li, Bo and Liu, Ziwei and Wang, Quan and Lin, Dahua and Yang, Lei},
-  journal = {arXiv preprint arXiv:2511.13719},
-  year = {2025}
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year = {2026}
 }
 ```
