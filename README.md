@@ -472,7 +472,7 @@ Our data is stored in the **SenseNova-SI-800K.jsonl** file using the JSONL (JSON
 
 ## 🛠️ QuickStart
 
-### Installation
+### Inference Installation
 
 We recommend using [uv](https://docs.astral.sh/uv/) to manage the environment.
 
@@ -757,6 +757,71 @@ python example.py \
 ```
 
 ### Training
+
+#### 1. Download Dataset
+
+Download [SenseNova-SI-800K](https://huggingface.co/datasets/sensenova/SenseNova-SI-800K) into `training/data/`:
+
+```bash
+pip install huggingface_hub
+huggingface-cli download sensenova/SenseNova-SI-800K --repo-type dataset --local-dir training/data/SenseNova-SI-800K
+```
+
+#### 2. Training with Bagel
+
+**Download pretrained model**
+
+Download [BAGEL-7B-MoT](https://huggingface.co/ByteDance-Seed/BAGEL-7B-MoT) into `training/pretrained_models/`:
+
+```bash
+huggingface-cli download ByteDance-Seed/BAGEL-7B-MoT --local-dir training/pretrained_models/BAGEL-7B-MoT
+```
+
+**Install dependencies**
+
+```bash
+conda create -n bagel python=3.10 -y
+conda activate bagel
+pip install uv
+uv pip install -r training/Bagel/requirements.txt
+uv pip install flash_attn==2.5.8 --no-build-isolation
+```
+
+**Run training**
+
+```bash
+bash training/Bagel/scripts/train_sensenova_si_800k.sh
+```
+
+For details on training hyperparameters (learning rate, batch size, FSDP config, etc.), refer to [training/Bagel/TRAIN.md](training/Bagel/TRAIN.md).
+
+#### 3. Training with InternVL
+
+**Download pretrained model**
+
+Download [InternVL3-8B](https://huggingface.co/OpenGVLab/InternVL3-8B) into `training/pretrained_models/`:
+
+```bash
+huggingface-cli download OpenGVLab/InternVL3-8B --local-dir training/pretrained_models/OpenGVLab/InternVL3-8B
+```
+
+**Install dependencies**
+
+```bash
+conda create -n internvl python=3.10 -y
+conda activate internvl
+pip install uv
+uv pip install -r training/InternVL/requirements.txt
+uv pip install flash-attn==2.3.6
+```
+
+**Run training**
+
+```bash
+bash training/InternVL/internvl_chat/shell/sensenova_si_800k_internvl3_8b.sh
+```
+
+#### 4. Training with Qwen3-VL
 
 To train SenseNova-SI-Qwen3-VL-8B, refer to [training/training_qwen3_vl.md](training/training_qwen3_vl.md).
 
