@@ -13,8 +13,7 @@ from einops import rearrange
 from timm.models.layers import DropPath
 from torch import nn
 from transformers.activations import ACT2FN
-from transformers.modeling_outputs import (BaseModelOutput,
-                                           BaseModelOutputWithPooling)
+from transformers.modeling_outputs import BaseModelOutput, BaseModelOutputWithPooling
 from transformers.modeling_utils import PreTrainedModel
 from transformers.utils import logging
 
@@ -22,8 +21,7 @@ from .configuration_intern_vit import InternVisionConfig
 
 try:
     from flash_attn.bert_padding import pad_input, unpad_input
-    from flash_attn.flash_attn_interface import \
-        flash_attn_varlen_qkvpacked_func
+    from flash_attn.flash_attn_interface import flash_attn_varlen_qkvpacked_func
     has_flash_attn = True
 except:
     print('FlashAttention2 is not installed.')

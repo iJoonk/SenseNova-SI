@@ -16,8 +16,13 @@ from internvl.model.phi3.modeling_phi3 import Phi3ForCausalLM
 from peft import LoraConfig, get_peft_model
 from torch import nn
 from torch.nn import CrossEntropyLoss
-from transformers import (AutoModel, GenerationConfig, LlamaForCausalLM,
-                          LlamaTokenizer, Qwen2ForCausalLM)
+from transformers import (
+    AutoModel,
+    GenerationConfig,
+    LlamaForCausalLM,
+    LlamaTokenizer,
+    Qwen2ForCausalLM,
+)
 from transformers.modeling_outputs import CausalLMOutputWithPast
 from transformers.modeling_utils import PreTrainedModel
 from transformers.utils import ModelOutput, logging

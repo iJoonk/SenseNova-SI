@@ -1,13 +1,17 @@
+import argparse
 import json
 import os
-import argparse
 from collections import OrderedDict
 from copy import deepcopy
 
 import torch
 from safetensors import safe_open
-from transformers import (AutoConfig, AutoModel, AutoModelForImageTextToText,
-                          AutoTokenizer)
+from transformers import (
+    AutoConfig,
+    AutoModel,
+    AutoModelForImageTextToText,
+    AutoTokenizer,
+)
 
 
 def compute_l2_distance(model1, model2):

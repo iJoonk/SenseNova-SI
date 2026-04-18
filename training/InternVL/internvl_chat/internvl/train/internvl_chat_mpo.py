@@ -32,34 +32,59 @@ import torch.distributed as dist
 import transformers
 from internvl.dist_utils import init_dist
 from internvl.model.internlm2.modeling_internlm2 import InternLM2ForCausalLM
-from internvl.model.internvl_chat import (InternVisionConfig,
-                                          InternVisionModel,
-                                          InternVLChatConfig,
-                                          InternVLChatModel)
-from internvl.patch import (concat_pad_data_collator,
-                            dpo_concat_pad_data_collator,
-                            replace_llama_rmsnorm_with_fused_rmsnorm,
-                            replace_train_sampler)
-from internvl.train.constants import (BOX_END_TOKEN, BOX_START_TOKEN,
-                                      IMG_CONTEXT_TOKEN, IMG_END_TOKEN,
-                                      IMG_START_TOKEN, QUAD_END_TOKEN,
-                                      QUAD_START_TOKEN, REF_END_TOKEN,
-                                      REF_START_TOKEN)
-from internvl.train.dataset import (ConcatDataset, TCSLoader,
-                                    WeightedConcatDataset, build_transform,
-                                    dynamic_preprocess, preprocess,
-                                    preprocess_internlm,
-                                    preprocess_internvl2_5, preprocess_mpt,
-                                    preprocess_phi3)
+from internvl.model.internvl_chat import (
+    InternVisionConfig,
+    InternVisionModel,
+    InternVLChatConfig,
+    InternVLChatModel,
+)
+from internvl.patch import (
+    concat_pad_data_collator,
+    dpo_concat_pad_data_collator,
+    replace_llama_rmsnorm_with_fused_rmsnorm,
+    replace_train_sampler,
+)
+from internvl.train.constants import (
+    BOX_END_TOKEN,
+    BOX_START_TOKEN,
+    IMG_CONTEXT_TOKEN,
+    IMG_END_TOKEN,
+    IMG_START_TOKEN,
+    QUAD_END_TOKEN,
+    QUAD_START_TOKEN,
+    REF_END_TOKEN,
+    REF_START_TOKEN,
+)
+from internvl.train.dataset import (
+    ConcatDataset,
+    TCSLoader,
+    WeightedConcatDataset,
+    build_transform,
+    dynamic_preprocess,
+    preprocess,
+    preprocess_internlm,
+    preprocess_internvl2_5,
+    preprocess_mpt,
+    preprocess_phi3,
+)
 from internvl.train.trainer_dpo import MultimodalDPOTrainer
 from PIL import Image, ImageFile, PngImagePlugin, UnidentifiedImageError
 from torch.utils.data import Dataset
-from transformers import (AutoConfig, AutoModelForCausalLM, AutoTokenizer,
-                          HfArgumentParser, Trainer, TrainingArguments,
-                          set_seed)
+from transformers import (
+    AutoConfig,
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    HfArgumentParser,
+    Trainer,
+    TrainingArguments,
+    set_seed,
+)
 from transformers.trainer_utils import get_last_checkpoint
-from transformers.utils.logging import (enable_default_handler,
-                                        enable_explicit_format, set_verbosity)
+from transformers.utils.logging import (
+    enable_default_handler,
+    enable_explicit_format,
+    set_verbosity,
+)
 from trl import DPOConfig as DPOConfigTRL
 
 # Try to import petrel_client for image loading, fallback to PIL if unavailable
@@ -853,8 +878,10 @@ def main():
 
     if model_args.use_liger:
         from internvl.patch import apply_liger_kernel_to_internvit
-        from liger_kernel.transformers import (apply_liger_kernel_to_llama,
-                                               apply_liger_kernel_to_qwen2)
+        from liger_kernel.transformers import (
+            apply_liger_kernel_to_llama,
+            apply_liger_kernel_to_qwen2,
+        )
         apply_liger_kernel_to_llama()
         apply_liger_kernel_to_qwen2()
         # apply_liger_kernel_to_internvit()

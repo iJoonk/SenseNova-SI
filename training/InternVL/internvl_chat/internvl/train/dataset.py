@@ -12,6 +12,7 @@ IGNORE_TOKEN_ID = LabelSmoother.ignore_index
 import os
 import random
 import re
+import sys
 from collections import Counter
 from typing import Dict
 
@@ -28,11 +29,17 @@ from PIL import Image
 from torch.utils.data import ConcatDataset, WeightedRandomSampler
 from torchvision.transforms.functional import InterpolationMode
 
-from .constants import (CLIP_MEAN, CLIP_STD, IMAGENET_MEAN, IMAGENET_STD,
-                        IMG_CONTEXT_TOKEN, IMG_END_TOKEN, IMG_START_TOKEN,
-                        SIGLIP_MEAN, SIGLIP_STD)
-
-import sys
+from .constants import (
+    CLIP_MEAN,
+    CLIP_STD,
+    IMAGENET_MEAN,
+    IMAGENET_STD,
+    IMG_CONTEXT_TOKEN,
+    IMG_END_TOKEN,
+    IMG_START_TOKEN,
+    SIGLIP_MEAN,
+    SIGLIP_STD,
+)
 
 
 def calculate_ngram_repetition(text, n):

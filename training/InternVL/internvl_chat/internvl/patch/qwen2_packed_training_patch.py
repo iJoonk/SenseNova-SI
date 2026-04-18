@@ -6,8 +6,10 @@
 
 import torch
 from flash_attn.flash_attn_interface import flash_attn_varlen_func
-from transformers.models.qwen2.modeling_qwen2 import (QWEN2_ATTENTION_CLASSES,
-                                                      Qwen2FlashAttention2)
+from transformers.models.qwen2.modeling_qwen2 import (
+    QWEN2_ATTENTION_CLASSES,
+    Qwen2FlashAttention2,
+)
 
 
 # Modified from transformers.models.qwen2.modeling_qwen2.Qwen2FlashAttention2
