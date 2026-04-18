@@ -823,6 +823,15 @@ bash training/InternVL/internvl_chat/shell/sensenova_si_800k_internvl3_8b.sh
 EASI 支持超过 20 种空间智能模型和 20 多种空间基准，并提供 Docker 实现一键式空间智能评估。
 
 
+### 致谢
+
+本项目包含基于 BAGEL、InternVL、lmms-engine 团队原始代码修改的代码。
+
+* 源代码仓库：[BAGEL](https://github.com/bytedance-seed/BAGEL)、[InternVL](https://github.com/opengvlab/internvl)、[lmms-engine](https://github.com/EvolvingLMMs-Lab/lmms-engine)
+
+我们衷心感谢原作者及贡献者的工作。
+请参阅原始仓库以获取完整细节、更新及许可信息。
+
 ## 🖊️ 引用
 
 ```bib

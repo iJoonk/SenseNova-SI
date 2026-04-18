@@ -831,6 +831,15 @@ To reproduce the benchmark results above, please refer to [EASI](https://github.
 
 EASI supports over 20 spatial intelligence models and more than 20 spatial benchmarks, offering Docker for one-click spatial intelligence evaluation.
 
+## Acknowledgements
+
+This project includes code that is modified from the original code by the BAGEL, InternVL, lmms-engine team.
+
+* Source repository: [BAGEL](https://github.com/bytedance-seed/BAGEL), [InternVL](https://github.com/opengvlab/internvl), [lmms-engine](https://github.com/EvolvingLMMs-Lab/lmms-engine)
+
+We gratefully acknowledge the authors and contributors for their work.
+Please refer to the original repositories for full details, updates, and licensing information.
+
 ## 🖊️ Citation
 
 ```bib
