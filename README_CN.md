@@ -757,35 +757,7 @@ pip install huggingface_hub
 huggingface-cli download sensenova/SenseNova-SI-800K --repo-type dataset --local-dir training/data/SenseNova-SI-800K
 ```
 
-#### 2. 训练BAGEL架构模型
-
-**下载预训练模型**
-
-将 [BAGEL-7B-MoT](https://huggingface.co/ByteDance-Seed/BAGEL-7B-MoT) 下载到 training/pretrained_models/：
-
-```bash
-huggingface-cli download ByteDance-Seed/BAGEL-7B-MoT --local-dir training/pretrained_models/BAGEL-7B-MoT
-```
-
-**安装依赖**
-
-```bash
-conda create -n bagel python=3.10 -y
-conda activate bagel
-pip install uv
-uv pip install -r training/Bagel/requirements.txt
-uv pip install flash_attn==2.5.8 --no-build-isolation
-```
-
-**开始训练**
-
-```bash
-bash training/Bagel/scripts/train_sensenova_si_800k.sh
-```
-
-有关训练超参数（如学习率、batch size、FSDP 配置等）的详细信息，请参考 [training/Bagel/TRAIN.md](training/Bagel/TRAIN.md)。
-
-#### 3. 训练InternVL架构模型
+#### 2(a). 训练InternVL架构模型
 
 **载预训练模型**
 
@@ -812,9 +784,66 @@ bash training/InternVL/internvl_chat/shell/sensenova_si_800k_internvl3_8b.sh
 3. 使用 Qwen3-VL 进行训练
 ```
 
-#### 4. 训练Qwen3-VL架构模型
+#### 2(b). 训练Qwen3-VL架构模型
 
-训练 SenseNova-SI-Qwen3-VL-8B，请参考 [training/training_qwen3_vl.md](training/training_qwen3_vl.md)。
+训练框架为 [lmms-engine](https://github.com/EvolvingLMMs-Lab/lmms-engine)，作为一个 Git 子模块包含在 `training/pretrained_models/` 目录下。
+
+**下载预训练模型**
+
+将 [Qwen3VL-8B](https://github.com/QwenLM/Qwen3-VL) 下载到 `training/pretrained_models/`:
+
+```bash
+huggingface-cli download Qwen/Qwen3-VL-8B-Instruct --local-dir training/pretrained_models/Qwen/Qwen3-VL-8B-Instruct
+```
+
+**安装依赖**
+
+```bash
+# Initialize the lmms-engine submodule (first time only)
+git submodule update --init --recursive
+
+conda create -n qwen3vl python=3.10 -y
+uv pip install -e training/lmms-engine
+
+# Optional: Performance optimizations
+uv pip install flash-attn --no-build-isolation
+uv pip install liger-kernel
+```
+
+**开始训练**
+
+```bash
+# Single node, 8 GPUs (default)
+bash training/qwen3_vl/run.sh
+```
+
+#### 2(c). 训练BAGEL架构模型
+
+**下载预训练模型**
+
+将 [BAGEL-7B-MoT](https://huggingface.co/ByteDance-Seed/BAGEL-7B-MoT) 下载到 training/pretrained_models/：
+
+```bash
+huggingface-cli download ByteDance-Seed/BAGEL-7B-MoT --local-dir training/pretrained_models/BAGEL-7B-MoT
+```
+
+**安装依赖**
+
+```bash
+conda create -n bagel python=3.10 -y
+conda activate bagel
+pip install uv
+uv pip install -r training/Bagel/requirements.txt
+uv pip install flash_attn==2.5.8 --no-build-isolation
+```
+
+**开始训练**
+
+```bash
+bash training/Bagel/scripts/train_sensenova_si_800k.sh
+```
+
+有关训练超参数（如学习率、batch size、FSDP 配置等）的详细信息，请参考 [training/Bagel/TRAIN.md](training/Bagel/TRAIN.md)。
 
 ### 评测
 

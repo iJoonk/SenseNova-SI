@@ -766,36 +766,7 @@ Download [SenseNova-SI-800K](https://huggingface.co/datasets/sensenova/SenseNova
 pip install huggingface_hub
 huggingface-cli download sensenova/SenseNova-SI-800K --repo-type dataset --local-dir training/data/SenseNova-SI-800K
 ```
-
-#### 2. Training with Bagel
-
-**Download pretrained model**
-
-Download [BAGEL-7B-MoT](https://huggingface.co/ByteDance-Seed/BAGEL-7B-MoT) into `training/pretrained_models/`:
-
-```bash
-huggingface-cli download ByteDance-Seed/BAGEL-7B-MoT --local-dir training/pretrained_models/BAGEL-7B-MoT
-```
-
-**Install dependencies**
-
-```bash
-conda create -n bagel python=3.10 -y
-conda activate bagel
-pip install uv
-uv pip install -r training/Bagel/requirements.txt
-uv pip install flash_attn==2.5.8 --no-build-isolation
-```
-
-**Run training**
-
-```bash
-bash training/Bagel/scripts/train_sensenova_si_800k.sh
-```
-
-For details on training hyperparameters (learning rate, batch size, FSDP config, etc.), refer to [training/Bagel/TRAIN.md](training/Bagel/TRAIN.md).
-
-#### 3. Training with InternVL
+#### 2(a). Training with InternVL
 
 **Download pretrained model**
 
@@ -811,19 +782,78 @@ huggingface-cli download OpenGVLab/InternVL3-8B --local-dir training/pretrained_
 conda create -n internvl python=3.10 -y
 conda activate internvl
 pip install uv
-uv pip install -r training/InternVL/requirements.txt
+uv pip install -r training/intern_vl/requirements.txt
 uv pip install flash-attn==2.3.6
 ```
 
 **Run training**
 
 ```bash
-bash training/InternVL/internvl_chat/shell/sensenova_si_800k_internvl3_8b.sh
+bash training/intern_vl/internvl_chat/shell/sensenova_si_800k_internvl3_8b.sh
 ```
 
-#### 4. Training with Qwen3-VL
+#### 2(b). Training with Qwen3-VL
 
-To train SenseNova-SI-Qwen3-VL-8B, refer to [training/training_qwen3_vl.md](training/training_qwen3_vl.md).
+The training framework is [lmms-engine](https://github.com/EvolvingLMMs-Lab/lmms-engine), included as a git submodule under `training/lmms-engine/`.
+
+**Download pretrained model**
+
+Download [Qwen3VL-8B](https://github.com/QwenLM/Qwen3-VL) into `training/pretrained_models/`:
+
+```bash
+huggingface-cli download Qwen/Qwen3-VL-8B-Instruct --local-dir training/pretrained_models/Qwen/Qwen3-VL-8B-Instruct
+```
+
+**Install dependencies**
+
+```bash
+# Initialize the lmms-engine submodule (first time only)
+git submodule update --init --recursive
+
+conda create -n qwen3vl python=3.10 -y
+uv pip install -e training/lmms-engine
+
+# Optional: Performance optimizations
+uv pip install flash-attn --no-build-isolation
+uv pip install liger-kernel
+```
+
+**Run training**
+
+```bash
+# Single node, 8 GPUs (default)
+bash training/qwen3_vl/run.sh
+```
+
+
+#### 2(c). Training with Bagel
+
+**Download pretrained model**
+
+Download [BAGEL-7B-MoT](https://huggingface.co/ByteDance-Seed/BAGEL-7B-MoT) into `training/pretrained_models/`:
+
+```bash
+huggingface-cli download ByteDance-Seed/BAGEL-7B-MoT --local-dir training/pretrained_models/BAGEL-7B-MoT
+```
+
+**Install dependencies**
+
+```bash
+conda create -n bagel python=3.10 -y
+conda activate bagel
+pip install uv
+uv pip install -r training/bagel/requirements.txt
+uv pip install flash_attn==2.5.8 --no-build-isolation
+```
+
+**Run training**
+
+```bash
+bash training/bagel/scripts/train_sensenova_si_800k.sh
+```
+
+For details on training hyperparameters (learning rate, batch size, FSDP config, etc.), refer to [training/bagel/TRAIN.md](training/bagel/TRAIN.md).
+
 
 ### Evaluation
 
