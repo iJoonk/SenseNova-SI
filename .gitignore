@@ -215,3 +215,8 @@ pyrightconfig.json
 ### Examples ###
 examples/*.jsonl
 examples/*.png
+
+### Training data and results ###
+training/pretrained_models/
+training/data/
+training/results/

@@ -183,7 +183,7 @@ trainer_args:
     end_step: 3
 model_config:
   extra_kwargs: {}
-  load_from_pretrained_path: Qwen/Qwen3-VL-8B-Instruct
+  load_from_pretrained_path: training/pretrained_models/Qwen/Qwen3-VL-8B-Instruct
   load_from_config: null
   attn_implementation: flash_attention_2
   overwrite_config: null

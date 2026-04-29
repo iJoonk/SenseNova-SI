@@ -472,7 +472,7 @@ Our data is stored in the **SenseNova-SI-800K.jsonl** file using the JSONL (JSON
 
 ## 🛠️ QuickStart
 
-### Installation
+### Inference Installation
 
 We recommend using [uv](https://docs.astral.sh/uv/) to manage the environment.
 
@@ -758,13 +758,117 @@ python example.py \
 
 ### Training
 
-To train SenseNova-SI-Qwen3-VL-8B, refer to [training/training_qwen3_vl.md](training/training_qwen3_vl.md).
+#### 1. Download Dataset
+
+Download [SenseNova-SI-800K](https://huggingface.co/datasets/sensenova/SenseNova-SI-800K) into `training/data/`:
+
+```bash
+pip install huggingface_hub
+huggingface-cli download sensenova/SenseNova-SI-800K --repo-type dataset --local-dir training/data/SenseNova-SI-800K
+```
+#### 2(a). Training with InternVL
+
+**Download pretrained model**
+
+Download [InternVL3-8B](https://huggingface.co/OpenGVLab/InternVL3-8B) into `training/pretrained_models/`:
+
+```bash
+huggingface-cli download OpenGVLab/InternVL3-8B --local-dir training/pretrained_models/OpenGVLab/InternVL3-8B
+```
+
+**Install dependencies**
+
+```bash
+conda create -n internvl python=3.10 -y
+conda activate internvl
+pip install uv
+uv pip install -r training/intern_vl/requirements.txt
+uv pip install flash-attn==2.3.6
+```
+
+**Run training**
+
+```bash
+bash training/intern_vl/internvl_chat/shell/sensenova_si_800k_internvl3_8b.sh
+```
+
+#### 2(b). Training with Qwen3-VL
+
+The training framework is [lmms-engine](https://github.com/EvolvingLMMs-Lab/lmms-engine), included as a git submodule under `training/lmms-engine/`.
+
+**Download pretrained model**
+
+Download [Qwen3VL-8B](https://github.com/QwenLM/Qwen3-VL) into `training/pretrained_models/`:
+
+```bash
+huggingface-cli download Qwen/Qwen3-VL-8B-Instruct --local-dir training/pretrained_models/Qwen/Qwen3-VL-8B-Instruct
+```
+
+**Install dependencies**
+
+```bash
+# Initialize the lmms-engine submodule (first time only)
+git submodule update --init --recursive
+
+conda create -n qwen3vl python=3.10 -y
+uv pip install -e training/lmms-engine
+
+# Optional: Performance optimizations
+uv pip install flash-attn --no-build-isolation
+uv pip install liger-kernel
+```
+
+**Run training**
+
+```bash
+# Single node, 8 GPUs (default)
+bash training/qwen3_vl/run.sh
+```
+
+
+#### 2(c). Training with Bagel
+
+**Download pretrained model**
+
+Download [BAGEL-7B-MoT](https://huggingface.co/ByteDance-Seed/BAGEL-7B-MoT) into `training/pretrained_models/`:
+
+```bash
+huggingface-cli download ByteDance-Seed/BAGEL-7B-MoT --local-dir training/pretrained_models/BAGEL-7B-MoT
+```
+
+**Install dependencies**
+
+```bash
+conda create -n bagel python=3.10 -y
+conda activate bagel
+pip install uv
+uv pip install -r training/bagel/requirements.txt
+uv pip install flash_attn==2.5.8 --no-build-isolation
+```
+
+**Run training**
+
+```bash
+bash training/bagel/scripts/train_sensenova_si_800k.sh
+```
+
+For details on training hyperparameters (learning rate, batch size, FSDP config, etc.), refer to [training/bagel/TRAIN.md](training/bagel/TRAIN.md).
+
 
 ### Evaluation
 
 To reproduce the benchmark results above, please refer to [EASI](https://github.com/EvolvingLMMs-Lab/EASI) to evaluate SenseNova-SI on mainstream spatial intelligence benchmarks.
 
 EASI supports over 20 spatial intelligence models and more than 20 spatial benchmarks, offering Docker for one-click spatial intelligence evaluation.
+
+## Acknowledgements
+
+This project includes code that is modified from the original code by the BAGEL, InternVL, lmms-engine team.
+
+* Source repository: [BAGEL](https://github.com/bytedance-seed/BAGEL), [InternVL](https://github.com/opengvlab/internvl), [lmms-engine](https://github.com/EvolvingLMMs-Lab/lmms-engine)
+
+We gratefully acknowledge the authors and contributors for their work.
+Please refer to the original repositories for full details, updates, and licensing information.
 
 ## 🖊️ Citation
 
