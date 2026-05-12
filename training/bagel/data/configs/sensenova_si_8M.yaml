@@ -1,6 +1,6 @@
-sensenova_si_800k:
+sensenova_si_8M:
   dataset_names:
-  - sensenova_si_800k
+  - sensenova_si_8M
   image_transform_args:
     image_stride: 14
     max_image_size: 980
@@ -13,5 +13,5 @@ sensenova_si_800k:
   shuffle_lines: True
   shuffle_seed: 0
   num_used_data:
-  - 832132
+  - 8165067
   weight: 1
