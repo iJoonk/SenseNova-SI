@@ -47,7 +47,7 @@ All newly trained multimodal foundation models are publicly released to facilita
 *In the future, SenseNova-SI will be integrated with larger-scale in-house models.*
 
 ## News
-- [2026-05-12] We have released official full-scale training dataset of the SenseNova-SI series, [**SenseNova-SI-8M**](https://huggingface.co/datasets/sensenova/SenseNova-SI-8M). SenseNova-SI-8M contains ~8.16 million carefully curated training samples spanning ~2.72 million unique images across 151 datasets.
+- [2026-05-12] We have released official full-scale training dataset of the SenseNova-SI series, [**SenseNova-SI-8M**](https://huggingface.co/datasets/sensenova/SenseNova-SI-8M). SenseNova-SI-8M contains ~8.16 million carefully curated training samples spanning ~2.72 million unique images.
 - [2026-04-13] We have released [**SenseNova-SI-1.3-Qwen3-VL-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.3-Qwen3-VL-8B), built on **Qwen3-VL** with **14M** SI training data, demonstrating strong spatial intelligence across benchmarks and improved **open-ended spatial question-answering** compared to earlier SenseNova-SI Qwen variants.
 - [2026-04-01] We have released [**SenseNova-SI-1.5-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.5-InternVL3-8B), which significantly improves **solid geometric** question-answering and analyzing capabilities, achieving an accuracy of **63.5** on SolidGeo MCQ.
 - [2026-03-27] We have released [**SenseNova-SI-1.4-InternVL3-8B**](https://huggingface.co/sensenova/SenseNova-SI-1.4-InternVL3-8B), which significantly improves **grounding** and **depth estimation** capabilities, achieving **89.21** on RefCOCO avg and **78.64** on CountBench.
